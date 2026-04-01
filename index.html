@@ -62,7 +62,6 @@ body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;posit
 .update-banner{background:linear-gradient(135deg,#0d0500,#1a0500);border:1px solid var(--blood);border-radius:8px;padding:9px 12px;margin-bottom:12px;display:flex;align-items:center;gap:10px;animation:pulse-border 2.5s infinite;}
 @keyframes pulse-border{0%,100%{border-color:rgba(139,0,0,.4)}50%{border-color:rgba(200,0,0,.9)}}
 .update-dot{width:8px;height:8px;border-radius:50%;background:var(--ember);flex-shrink:0;animation:blink 1s infinite;}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 .update-text{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:1px;color:var(--gold);flex:1;}
 
 .status-bar{background:linear-gradient(135deg,var(--ash),var(--parchment));border:1px solid rgba(139,0,0,.3);border-radius:10px;padding:11px 13px;margin-bottom:12px;display:flex;align-items:center;gap:10px;}
@@ -219,7 +218,7 @@ body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;posit
 
 #indScreen{position:fixed;inset:0;z-index:200;background:linear-gradient(135deg,#1a0000,#0a0000,#1a0800);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;opacity:0;pointer-events:none;transition:opacity .4s;}
 #indScreen.show{opacity:1;pointer-events:all;}
-.ind-cross{font-size:3.5rem;margin-bottom:14px;filter:drop-shadow(0 0 20px rgba(200,150,0,.8);animation:float 3s ease-in-out infinite;}
+.ind-cross{font-size:3.5rem;margin-bottom:14px;filter:drop-shadow(0 0 20px rgba(200,150,0,.8));animation:float 3s ease-in-out infinite;}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 .ind-title{font-family:'UnifrakturMaguntia',cursive;font-size:2rem;color:var(--gold);text-align:center;text-shadow:0 0 30px rgba(201,168,76,.5);margin-bottom:6px;}
 .ind-sub{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:3px;color:var(--blood);text-transform:uppercase;text-align:center;margin-bottom:18px;}
@@ -239,9 +238,9 @@ body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;posit
 .popup-text{font-style:italic;font-size:.88rem;line-height:1.5;color:var(--bone);}
 .popup-close{position:absolute;top:8px;right:10px;background:none;border:none;color:rgba(212,184,150,.35);font-size:.9rem;cursor:pointer;}
 
-/* ДОБАВЛЕНО: ЗВУКОВЫЕ ВОЛНЫ */
+/* ИСПРАВЛЕНИЕ: ЗВУКОВЫЕ ВОЛНЫ И РАЗМЕР СОВЫ */
 .rings-wrap{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;opacity:0;transition:opacity .4s ease;}
-.ring{position:absolute;border-radius:50%;border:2px solid rgba(201,168,76,0.6);box-shadow:0 0 15px rgba(255,150,0,0.4),inset 0 0 10px rgba(255,150,0,0.1);width:140px;height:140px;margin-left:-70px;margin-top:-70px;transform:scale(0);}
+.ring{position:absolute;border-radius:50%;border:2px solid rgba(201,168,76,0.6);box-shadow:0 0 15px rgba(255,150,0,0.4),inset 0 0 10px rgba(255,150,0,0.1);width:100px;height:100px;margin-left:-50px;margin-top:-50px;transform:scale(0);}
 .rings-wrap.active .ring{animation:ring-pulse 1.6s ease-out infinite;}
 .rings-wrap.active .ring:nth-child(2){animation-delay:.53s;}
 .rings-wrap.active .ring:nth-child(3){animation-delay:1.06s;}
@@ -250,6 +249,11 @@ body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;posit
   50% {transform:scale(2.2);opacity:.4;box-shadow:0 0 25px rgba(255,150,0,0.2),inset 0 0 15px rgba(255,150,0,0.1);}
   100%{transform:scale(3);opacity:0;box-shadow:0 0 35px rgba(255,150,0,0),inset 0 0 20px rgba(255,150,0,0);}
 }
+
+/* ИСПРАВЛЕНИЕ: УМЕНЬШАЕМ СОВУ НА ЭКРАНЕ МОЛИТВЫ */
+#speechOwl{width:80px!important;height:100px!important;margin:0 auto;display:block;}
+#s-prayer div[style*="width:120px"]{width:90px!important;height:110px!important;}
+@media(max-width:400px){#speechOwl{width:65px!important;height:80px!important;}}
 </style>
 </head>
 <body>
@@ -257,7 +261,6 @@ body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;posit
 <div id="fireBg"></div>
 <div class="particles" id="particles"></div>
 
-<!-- SCREEN: HOME -->
 <div class="screen active" id="s-home">
 <div class="screen-inner" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding-bottom:80px;">
   <div class="page-title" style="font-size:3.5rem;">СинТрекер</div>
@@ -266,18 +269,18 @@ body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;posit
   <div class="home-owl-wrap" onclick="petHomeOwl()">
     <div class="home-tooltip" id="homeTooltip">Я жду твоего выбора, грешник.</div>
     <svg class="home-owl-svg idle" viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="50" cy="85" rx="32" ry="38" fill="#1a2800"/><ellipse cx="50" cy="88" rx="28" ry="34" fill="#0d1800"/><ellipse cx="20" cy="90" rx="14" ry="22" fill="#0f1f00" transform="rotate(-15,20,90)"/><ellipse cx="80" cy="90" rx="14" ry="22" fill="#0f1f00" transform="rotate(15,80,90)"/><ellipse cx="50" cy="95" rx="18" ry="22" fill="#2d4400"/><ellipse cx="50" cy="48" rx="26" ry="26" fill="#1a2800"/><polygon points="28,28 22,8 36,22" fill="#0d1800"/><polygon points="72,28 78,8 64,22" fill="#0d1800"/><circle cx="38" cy="48" r="11" fill="#ffeecc"/><circle cx="62" cy="48" r="11" fill="#ffeecc"/><circle cx="38" cy="48" r="7" fill="#cc0000"/><circle cx="62" cy="48" r="7" fill="#cc0000"/><circle cx="38" cy="48" r="4" fill="#000"/><circle cx="62" cy="48" r="4" fill="#000"/><circle cx="40" cy="46" r="1.5" fill="white"/><circle cx="64" cy="46" r="1.5" fill="white"/><polygon points="50,54 44,62 56,62" fill="#c9a84c"/><path d="M40,68 Q50,62 60,68" stroke="#0d1800" stroke-width="2" fill="none"/><line x1="40" y1="122" x2="30" y2="128" stroke="#c9a84c" stroke-width="3" stroke-linecap="round"/><line x1="60" y1="122" x2="70" y2="128" stroke="#c9a84c" stroke-width="3" stroke-linecap="round"/><path d="M46,88 L54,88 M50,84 L50,96" stroke="#8b0000" stroke-width="2.5" opacity=".7"/><circle cx="38" cy="48" r="11" fill="none" stroke="#ff0000" stroke-width="1" opacity=".4"/><circle cx="62" cy="48" r="11" fill="none" stroke="#ff0000" stroke-width="1" opacity=".4"/></svg>
+      <ellipse cx="50" cy="85" rx="32" ry="38" fill="#1a2800"/><ellipse cx="50" cy="88" rx="28" ry="34" fill="#0d1800"/><ellipse cx="20" cy="90" rx="14" ry="22" fill="#0f1f00" transform="rotate(-15,20,90)"/><ellipse cx="80" cy="90" rx="14" ry="22" fill="#0f1f00" transform="rotate(15,80,90)"/><ellipse cx="50" cy="95" rx="18" ry="22" fill="#2d4400"/><ellipse cx="50" cy="48" rx="26" ry="26" fill="#1a2800"/><polygon points="28,28 22,8 36,22" fill="#0d1800"/><polygon points="72,28 78,8 64,22" fill="#0d1800"/><circle cx="38" cy="48" r="11" fill="#ffeecc"/><circle cx="62" cy="48" r="11" fill="#ffeecc"/><circle cx="38" cy="48" r="7" fill="#cc0000"/><circle cx="62" cy="48" r="7" fill="#cc0000"/><circle cx="38" cy="48" r="4" fill="#000"/><circle cx="62" cy="48" r="4" fill="#000"/><circle cx="40" cy="46" r="1.5" fill="white"/><circle cx="64" cy="46" r="1.5" fill="white"/><polygon points="50,54 44,62 56,62" fill="#c9a84c"/><path d="M40,68 Q50,62 60,68" stroke="#0d1800" stroke-width="2" fill="none"/><line x1="40" y1="122" x2="30" y2="128" stroke="#c9a84c" stroke-width="3" stroke-linecap="round"/><line x1="60" y1="122" x2="70" y2="128" stroke="#c9a84c" stroke-width="3" stroke-linecap="round"/><path d="M46,88 L54,88 M50,84 L50,96" stroke="#8b0000" stroke-width="2.5" opacity=".7"/><circle cx="38" cy="48" r="11" fill="none" stroke="#ff0000" stroke-width="1" opacity=".4"/><circle cx="62" cy="48" r="11" fill="none" stroke="#ff0000" stroke-width="1" opacity=".4"/>
+    </svg>
   </div>
   <div style="width:100%;max-width:380px;">
-    <div class="nav-card" onclick="goTo('s-sins')"><span class="nav-card-badge badge-v1">Главная</span><span class="nav-card-icon">😈</span><div class="nav-card-title">Счётчик Грехов</div><div class="nav-card-desc">Считай грехи, смотри диаграмму пути к аду, рейтинг духовности и задания дня.</div></div>
-    <div class="nav-card" onclick="goTo('s-prayer')"><span class="nav-card-badge badge-mic">🎙 Микрофон</span><span class="nav-card-icon">🦉</span><div class="nav-card-title">Сова Слушает</div><div class="nav-card-desc">Читай молитву вслух — сова проверяет каждое слово в реальном времени.</div></div>
-    <div class="nav-card" onclick="goTo('s-shop')" style="margin-bottom:0;"><span class="nav-card-badge badge-pro">Pro</span><span class="nav-card-icon">💰</span><div class="nav-card-title">Магазин Благодати</div><div class="nav-card-desc">Донаты, индульгенции, VIP-благодать ×3 и эксклюзивные молитвы.</div></div>
+    <div class="nav-card" onclick="goTo('s-sins')"><span class="nav-card-badge badge-v1">Главная</span><span class="nav-card-icon">😈</span><div class="nav-card-title">Счётчик Грехов</div><div class="nav-card-desc">Считай грехи, смотри диаграмму пути к аду.</div></div>
+    <div class="nav-card" onclick="goTo('s-prayer')"><span class="nav-card-badge badge-mic">🎙 Микрофон</span><span class="nav-card-icon">🦉</span><div class="nav-card-title">Сова Слушает</div><div class="nav-card-desc">Читай молитву вслух — сова проверит.</div></div>
+    <div class="nav-card" onclick="goTo('s-shop')" style="margin-bottom:0;"><span class="nav-card-badge badge-pro">Pro</span><span class="nav-card-icon">💰</span><div class="nav-card-title">Магазин Благодати</div><div class="nav-card-desc">Донаты, индульгенции, VIP.</div></div>
   </div>
   <div style="margin-top:28px;font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:3px;color:rgba(212,184,150,.18);text-transform:uppercase;">Сова наблюдает • 2026</div>
 </div>
 </div>
 
-<!-- SCREEN: SINS -->
 <div class="screen" id="s-sins">
 <div class="screen-inner">
   <div class="page-title">Грехи</div>
@@ -286,7 +289,7 @@ body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;posit
   <div class="status-bar">
     <div class="tier-badge tier-free" id="tierBadge">FREE</div>
     <div class="status-info"><div class="status-name" id="statusName">Обычный грешник</div><div class="status-perks" id="statusPerks">Базовые молитвы • Ограничен</div></div>
-    <button class="btn-upgrade" onclick="goTo('s-shop')">УЛУЧИТЬ ✦</button>
+    <button class="btn-upgrade" onclick="goTo('s-shop')">УЛУЧШИТЬ ✦</button>
   </div>
   <div class="streak-row">
     <div class="streak-card"><div class="streak-num" id="streakNum">1</div><div class="streak-label">🔥 Дней подряд</div></div>
@@ -310,7 +313,7 @@ body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;posit
     <div class="section-title">☩ Путь к Аду ☩</div>
     <div class="hell-meter">
       <svg width="160" height="160" viewBox="0 0 160 160"><circle cx="80" cy="80" r="60" fill="none" stroke="rgba(139,0,0,.2)" stroke-width="12"/><circle cx="80" cy="80" r="60" fill="none" stroke="url(#fg)" stroke-width="12" stroke-linecap="round" stroke-dasharray="376.9" stroke-dashoffset="376.9" id="hellArc" style="transition:stroke-dashoffset .8s cubic-bezier(.34,1.1,.64,1)"/><defs><linearGradient id="fg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#8b0000"/><stop offset="100%" stop-color="#ff4500"/></linearGradient></defs></svg>
-      <div class="hell-meter-label><span class="hell-pct" id="hellPct">0%</span><span class="hell-verdict" id="hellVerdict">Праведник</span></div>
+      <div class="hell-meter-label"><span class="hell-pct" id="hellPct">0%</span><span class="hell-verdict" id="hellVerdict">Праведник</span></div>
     </div>
     <div class="bar-chart" id="barChart"></div>
   </div>
@@ -326,22 +329,17 @@ body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;posit
 </div>
 </div>
 
-<!-- SCREEN: PRAYER -->
 <div class="screen" id="s-prayer">
 <div class="screen-inner">
   <div class="page-title">Сова Слушает</div>
   <div class="page-sub">Читай вслух — сова проверит</div>
   <hr class="orn">
   <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:18px;">
-    <div style="position:relative;width:120px;height:150px;">
-      <div class="rings-wrap" id="speechRings">
-        <div class="ring"></div><div class="ring"></div><div class="ring"></div>
-      </div>
-      <svg class="owl-mini-svg idle" id="speechOwl" viewBox="0 0 100 130" style="width:120px;height:150px;" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="85" rx="32" ry="38" fill="#1a2800"/><ellipse cx="50" cy="88" rx="28" ry="34" fill="#0d1800"/><ellipse cx="20" cy="90" rx="14" ry="22" fill="#0f1f00" transform="rotate(-15,20,90)"/><ellipse cx="80" cy="90" rx="14" ry="22" fill="#0f1f00" transform="rotate(15,80,90)"/><ellipse cx="50" cy="95" rx="18" ry="22" fill="#2d4400"/><ellipse cx="50" cy="48" rx="26" ry="26" fill="#1a2800"/><polygon points="28,28 22,8 36,22" fill="#0d1800"/><polygon points="72,28 78,8 64,22" fill="#0d1800"/><circle cx="38" cy="48" r="11" fill="#ffeecc"/><circle cx="62" cy="48" r="11" fill="#ffeecc"/><circle cx="38" cy="48" r="7" fill="#cc0000" id="spIrisL"/><circle cx="62" cy="48" r="7" fill="#cc0000" id="spIrisR"/><circle cx="38" cy="48" r="4" fill="#000"/><circle cx="62" cy="48" r="4" fill="#000"/><circle cx="40" cy="46" r="1.5" fill="white"/><circle cx="64" cy="46" r="1.5" fill="white"/><polygon points="50,54 44,62 56,62" fill="#c9a84c"/><path d="M40,68 Q50,62 60,68" stroke="#0d1800" stroke-width="2.5" fill="none" id="spMouth"/><line x1="40" y1="122" x2="30" y2="128" stroke="#c9a84c" stroke-width="3" stroke-linecap="round"/><line x1="60" y1="122" x2="70" y2="128" stroke="#c9a84c" stroke-width="3" stroke-linecap="round"/><path d="M46,88 L54,88 M50,84 L50,96" stroke="#8b0000" stroke-width="2.5" opacity=".7"/><circle cx="38" cy="48" r="11" fill="none" stroke="#ff0000" stroke-width="1" opacity=".4"/><circle cx="62" cy="48" r="11" fill="none" stroke="#ff0000" stroke-width="1" opacity=".4"/></svg>
+    <div style="position:relative;width:90px;height:110px;">
+      <div class="rings-wrap" id="speechRings"><div class="ring"></div><div class="ring"></div><div class="ring"></div></div>
+      <svg class="owl-mini-svg idle" id="speechOwl" viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="85" rx="32" ry="38" fill="#1a2800"/><ellipse cx="50" cy="88" rx="28" ry="34" fill="#0d1800"/><ellipse cx="20" cy="90" rx="14" ry="22" fill="#0f1f00" transform="rotate(-15,20,90)"/><ellipse cx="80" cy="90" rx="14" ry="22" fill="#0f1f00" transform="rotate(15,80,90)"/><ellipse cx="50" cy="95" rx="18" ry="22" fill="#2d4400"/><ellipse cx="50" cy="48" rx="26" ry="26" fill="#1a2800"/><polygon points="28,28 22,8 36,22" fill="#0d1800"/><polygon points="72,28 78,8 64,22" fill="#0d1800"/><circle cx="38" cy="48" r="11" fill="#ffeecc"/><circle cx="62" cy="48" r="11" fill="#ffeecc"/><circle cx="38" cy="48" r="7" fill="#cc0000" id="spIrisL"/><circle cx="62" cy="48" r="7" fill="#cc0000" id="spIrisR"/><circle cx="38" cy="48" r="4" fill="#000"/><circle cx="62" cy="48" r="4" fill="#000"/><circle cx="40" cy="46" r="1.5" fill="white"/><circle cx="64" cy="46" r="1.5" fill="white"/><polygon points="50,54 44,62 56,62" fill="#c9a84c"/><path d="M40,68 Q50,62 60,68" stroke="#0d1800" stroke-width="2.5" fill="none" id="spMouth"/><line x1="40" y1="122" x2="30" y2="128" stroke="#c9a84c" stroke-width="3" stroke-linecap="round"/><line x1="60" y1="122" x2="70" y2="128" stroke="#c9a84c" stroke-width="3" stroke-linecap="round"/><path d="M46,88 L54,88 M50,84 L50,96" stroke="#8b0000" stroke-width="2.5" opacity=".7"/><circle cx="38" cy="48" r="11" fill="none" stroke="#ff0000" stroke-width="1" opacity=".4"/><circle cx="62" cy="48" r="11" fill="none" stroke="#ff0000" stroke-width="1" opacity=".4"/></svg>
     </div>
-    <div class="owl-bubble" style="max-width:340px;padding:11px 14px;">
-      <div class="owl-text" id="speechBubble">Выбери молитву и нажми кнопку.</div>
-    </div>
+    <div class="owl-bubble" style="max-width:340px;padding:11px 14px;"><div class="owl-text" id="speechBubble">Выбери молитву и нажми кнопку.</div></div>
   </div>
   <div class="card-block">
     <div class="prayer-tab-row" id="prayerTabs"></div>
@@ -354,471 +352,129 @@ body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;posit
       <div class="score-box"><div class="score-num p" id="scPct">—</div><div class="score-lbl">Точность</div></div>
     </div>
     <div class="recognized-box" id="recognizedBox">Сова ещё ничего не слышала...</div>
-    <div class="result-banner" id="resultBanner">
-      <span class="result-icon" id="resultIcon"></span>
-      <div class="result-title" id="resultTitle"></div>
-      <div class="result-detail" id="resultDetail"></div>
-    </div>
-    <button class="btn-listen" id="btnListen" onclick="toggleListening()">
-      <span class="btn-mic">🎙️</span><span id="btnText">Начать чтение</span>
-    </button>
+    <div class="result-banner" id="resultBanner"><span class="result-icon" id="resultIcon"></span><div class="result-title" id="resultTitle"></div><div class="result-detail" id="resultDetail"></div></div>
+    <button class="btn-listen" id="btnListen" onclick="toggleListening()"><span class="btn-mic">🎙️</span><span id="btnText">Начать чтение</span></button>
     <button class="btn-reset-small" onclick="resetPrayer()">↺ Начать заново</button>
   </div>
 </div>
+</div>
 
-<!-- SCREEN: SHOP -->
 <div class="screen" id="s-shop">
 <div class="screen-inner">
   <div class="page-title">Благодать</div>
   <div class="page-sub">Инвестируй в спасение</div>
   <hr class="orn">
-  <div class="shop-tier s" onclick="purchase('silver')">
-    <div class="tier-header"><span class="tier-name" style="color:var(--silver);">🥈 Серебряный</span><span class="tier-price">99 ₽/мес</span></div>
-    <ul class="tier-perks"><li>1 грех/день — прощается автоматически</li><li>Благодать ×1.1</li><li>3 молитвы</li><li>Реклама скрыта на 3 дня</li></ul>
-    <button class="btn-buy buy-s">Получить Серебро</button>
-  </div>
-  <div class="shop-tier g" onclick="purchase('gold')">
-    <div class="tier-header"><span class="tier-name" style="color:var(--gold2);">🥇 Золотой</span><span class="tier-price">299 ₽/мес</span></div>
-    <ul class="tier-perks"><li>3 греха/день прощаются</li><li>Благодать ×1.25</li><li>8 молитв + редкие</li><li>Индульгенции −20%</li><li>Золотой значок</li></ul>
-    <button class="btn-buy buy-g">Получить Золото</button>
-  </div>
-  <div class="shop-tier pl" onclick="purchase('plat')">
-    <div class="tier-header"><span class="tier-name" style="color:var(--plat);">💎 Платиновый</span><span class="tier-price">799 ₽/мес</span></div>
-    <ul class="tier-perks"><li>Неограниченные грехи</li><li>Благодать ×1.5</li><li>Все молитвы разблокированы</li><li>Ежедневная индульгенция</li><li>Без рекламы навсегда*</li></ul>
-    <button class="btn-buy buy-pl">Получить Платину</button>
-    <div class="fine-print">* кроме «специальных предложений»</div>
-  </div>
-  <div class="shop-tier vp" onclick="purchase('vip')">
-    <div class="tier-header"><span class="tier-name" style="color:var(--vip);">👑 VIP Blessed</span><span class="tier-price">2490 ₽/мес</span></div>
-    <ul class="tier-perks><li>Все грехи прощаются в конце дня</li><li>Благодать ×3</li>Персональный ангел-куратор</li>Еженедельный отчёт</li>VIP рейтинг — всегда топ-3</li>NFT-сертификат «Достойный Прощения»</li>Поддержка 24/7</li></ul>
-    <button class="btn-buy buy-vp">✨ Стать VIP ✨</button>
-    <div class="fine-print">** ответ в течение 7–14 дней</div>
-  </div>
-  <button class="btn-reset-small" onclick="showIndulgence()">📜 Купить Индульгенцию разово</button>
+  <div class="shop-tier s" onclick="purchase('silver')"><div class="tier-header"><span class="tier-name" style="color:var(--silver);">🥈 Серебряный</span><span class="tier-price">99 ₽/мес</span></div><ul class="tier-perks"><li>1 грех/день — прощается</li><li>Благодать ×1.1</li><li>3 молитвы</li></ul><button class="btn-buy buy-s">Получить Серебро</button></div>
+  <div class="shop-tier g" onclick="purchase('gold')"><div class="tier-header"><span class="tier-name" style="color:var(--gold2);">🥇 Золотой</span><span class="tier-price">299 ₽/мес</span></div><ul class="tier-perks"><li>3 греха/день прощаются</li><li>Благодать ×1.25</li><li>8 молитв</li></ul><button class="btn-buy buy-g">Получить Золото</button></div>
+  <div class="shop-tier pl" onclick="purchase('plat')"><div class="tier-header"><span class="tier-name" style="color:var(--plat);">💎 Платиновый</span><span class="tier-price">799 ₽/мес</span></div><ul class="tier-perks"><li>∞ грехи</li><li>Благодать ×1.5</li><li>Все молитвы</li></ul><button class="btn-buy buy-pl">Получить Платину</button></div>
+  <div class="shop-tier vp" onclick="purchase('vip')"><div class="tier-header"><span class="tier-name" style="color:var(--vip);">👑 VIP</span><span class="tier-price">2490 ₽/мес</span></div><ul class="tier-perks"><li>Все грехи прощаются</li><li>Благодать ×3</li><li>Ангел-куратор</li></ul><button class="btn-buy buy-vp">✨ Стать VIP ✨</button></div>
+  <button class="btn-reset-small" onclick="showIndulgence()">📜 Купить Индульгенцию</button>
 </div>
 </div>
 
-<!-- INDULGENCE OVERLAY -->
-<div id="indScreen">
-  <div class="ind-cross">✝</div>
-  <div class="ind-title">Индульгенция</div>
-  <div class="ind-sub">Только сейчас</div>
-  <div class="ind-offer">
-    <div class="ind-offer-name" id="indName">Малая Индульгенция</div>
-    <div class="ind-offer-desc" id="indDesc">Прощает до 5 грехов немедленно.</div>
-    <span class="ind-price" id="indPrice">49 ₽</span>
-    <div class="ind-price-sub" id="indSub">разовый платёж</div>
-    <button class="btn-ind-buy" onclick="buyIndulgence()">🙏 КУПИТЬ ПРОЩЕНИЕ</button>
-  </div>
-  <div class="ind-timer">⏳ Предложение истекает через: <span id="indCountdown">05:00</span></div>
-  <button class="btn-ind-skip" id="skipBtn" style="display:none" onclick="closeIndulgence()">продолжить грешить бесплатно</button>
-</div>
+<div id="indScreen"><div class="ind-cross">✝</div><div class="ind-title">Индульгенция</div><div class="ind-sub">Только сейчас</div><div class="ind-offer"><div class="ind-offer-name" id="indName">Малая Индульгенция</div><div class="ind-offer-desc" id="indDesc">Прощает до 5 грехов.</div><span class="ind-price" id="indPrice">49 ₽</span><div class="ind-price-sub" id="indSub">разовый платёж</div><button class="btn-ind-buy" onclick="buyIndulgence()">🙏 КУПИТЬ</button></div><div class="ind-timer">⏳ <span id="indCountdown">05:00</span></div><button class="btn-ind-skip" id="skipBtn" style="display:none" onclick="closeIndulgence()">продолжить грешить</button></div>
 
-<!-- BOTTOM NAV -->
 <nav class="bnav">
   <button class="bnav-btn active" id="nav-home" onclick="goTo('s-home')"><span class="bnav-icon">☩</span><span class="bnav-label">Главная</span></button>
   <button class="bnav-btn" id="nav-sins" onclick="goTo('s-sins')"><span class="bnav-icon">😈</span><span class="bnav-label">Грехи</span></button>
   <button class="bnav-btn" id="nav-prayer" onclick="goTo('s-prayer')"><span class="bnav-icon">🦉</span><span class="bnav-label">Молитва</span></button>
-  <button class="bnav-btn" id="nav-shop" onclick="goTo('s-shop')" style="position:relative;"><span class="bnav-icon">💰</span><span class="bnav-label">Магазин</span><span class="bnav-dot"></span></button>
+  <button class="bnav-btn" id="nav-shop" onclick="goTo('s-shop')"><span class="bnav-icon">💰</span><span class="bnav-label">Магазин</span><span class="bnav-dot"></span></button>
 </nav>
 
-<!-- OWL POPUP -->
-<div class="owl-popup" id="owlPopup">
-  <div class="popup-owl"><svg viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="85" rx="32" ry="38" fill="#1a2800"/><ellipse cx="50" cy="88" rx="28" ry="34" fill="#0d1800"/><ellipse cx="50" cy="95" rx="18" ry="22" fill="#2d4400"/><ellipse cx="50" cy="48" rx="26" ry="26" fill="#1a2800"/><polygon points="28,28 22,8 36,22" fill="#0d1800"/><polygon points="72,28 78,8 64,22" fill="#0d1800"/><circle cx="38" cy="48" r="11" fill="#ffeecc"/><circle cx="62" cy="48" r="11" fill="#ffeecc"/><circle cx="38" cy="48" r="7" fill="#cc0000"/><circle cx="62" cy="48" r="7" fill="#cc0000"/><circle cx="38" cy="48" r="4" fill="#000"/><circle cx="62" cy="48" r="4" fill="#000"/><circle cx="40" cy="46" r="1.5" fill="white"/><circle cx="64" cy="46" r="1.5" fill="white"/><polygon points="50,54 44,62 56,62" fill="#c9a84c"/><path d="M40,68 Q50,62 60,68" stroke="#0d1800" stroke-width="2" fill="none"/><path d="M46,88 L54,88 M50,84 L50,96" stroke="#8b0000" stroke-width="2.5" opacity=".7"/><circle cx="38" cy="48" r="11" fill="none" stroke="#ff0000" stroke-width="1" opacity=".4"/><circle cx="62" cy="48" r="11" fill="none" stroke="#ff0000" stroke-width="1" opacity=".4"/></svg></div>
-  <div class="popup-text" id="popupText"></div>
-  <button class="popup-close" onclick="closePopup()">✕</button>
-</div>
+<div class="owl-popup" id="owlPopup"><div class="popup-owl"><svg viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="85" rx="32" ry="38" fill="#1a2800"/><ellipse cx="50" cy="88" rx="28" ry="34" fill="#0d1800"/><ellipse cx="50" cy="95" rx="18" ry="22" fill="#2d4400"/><ellipse cx="50" cy="48" rx="26" ry="26" fill="#1a2800"/><polygon points="28,28 22,8 36,22" fill="#0d1800"/><polygon points="72,28 78,8 64,22" fill="#0d1800"/><circle cx="38" cy="48" r="11" fill="#ffeecc"/><circle cx="62" cy="48" r="11" fill="#ffeecc"/><circle cx="38" cy="48" r="7" fill="#cc0000"/><circle cx="62" cy="48" r="7" fill="#cc0000"/><circle cx="38" cy="48" r="4" fill="#000"/><circle cx="62" cy="48" r="4" fill="#000"/><circle cx="40" cy="46" r="1.5" fill="white"/><circle cx="64" cy="46" r="1.5" fill="white"/><polygon points="50,54 44,62 56,62" fill="#c9a84c"/><path d="M40,68 Q50,62 60,68" stroke="#0d1800" stroke-width="2" fill="none"/></svg></div><div class="popup-text" id="popupText"></div><button class="popup-close" onclick="closePopup()">✕</button></div>
 
 <script>
-/* ═══════════════════════════════════════════
-   AUDIO ENGINE
-════════════════════════════════════════ */
-let audioCtx = null;
-function initAudio() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  if (audioCtx.state === 'suspended') audioCtx.resume();
-}
-function playTone(freq, duration, type = 'sine', vol = 0.1) {
-  if(!audioCtx) return;
-  try {
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-    gain.gain.setValueAtTime(vol, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.start(audioCtx.currentTime);
-    osc.stop(audioCtx.currentTime + duration);
-  } catch(e) {}
-}
-function playDoorSound() { initAudio(); playTone(80, 0.4, 'triangle', 0.1); setTimeout(()=>playTone(100, 0.3, 'triangle', 0.05), 100); }
-function playSinSound() { initAudio(); playTone(120, 0.4, 'sawtooth', 0.08); if(navigator.vibrate) navigator.vibrate(50); }
-function playForgiveSound() { initAudio(); playTone(800, 0.15); setTimeout(()=>playTone(1000, 0.2), 100); }
-function playPrayerDoneSound() { initAudio(); playTone(600, 0.15); setTimeout(()=>playTone(800, 0.15), 100); setTimeout(()=>playTone(1100, 0.3), 200); }
-function playBuySound() { initAudio(); playTone(600, 0.15); setTimeout(()=>playTone(900, 0.2), 100); }
+let audioCtx=null;
+function initAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();}
+function playTone(freq,dur,type='sine',vol=0.1){if(!audioCtx)return;try{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.setValueAtTime(freq,audioCtx.currentTime);g.gain.setValueAtTime(vol,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+dur);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+dur);}catch(e){}}
+function playDoorSound(){initAudio();playTone(80,0.4,'triangle',0.1);setTimeout(()=>playTone(100,0.3,'triangle',0.05),100);}
+function playSinSound(){initAudio();playTone(120,0.4,'sawtooth',0.08);if(navigator.vibrate)navigator.vibrate(50);}
+function playForgiveSound(){initAudio();playTone(800,0.15);setTimeout(()=>playTone(1000,0.2),100);}
+function playPrayerDoneSound(){initAudio();playTone(600,0.15);setTimeout(()=>playTone(800,0.15),100);setTimeout(()=>playTone(1100,0.3),200);}
+function playAngrySound(){initAudio();playTone(60,0.3,'sawtooth',0.1);}
+function playBuySound(){initAudio();playTone(600,0.15);setTimeout(()=>playTone(900,0.2),100);}
 
-/* ═════════════════════════════════════════════
-   NAVIGATION
-════════════════════════════════════════════════ */
-const screens = ['s-home','s-sins','s-prayer','s-shop'];
-const navIds  = ['nav-home','nav-sins','nav-prayer','nav-shop'];
+const screens=['s-home','s-sins','s-prayer','s-shop'],navIds=['nav-home','nav-sins','nav-prayer','nav-shop'];
+function goTo(id){initAudio();if(id==='s-home')playDoorSound();screens.forEach(s=>document.getElementById(s).classList.toggle('active',s===id));navIds.forEach((n,i)=>document.getElementById(n).classList.toggle('active',screens[i]===id));const el=document.getElementById(id);if(el)el.scrollTop=0;}
 
-function goTo(id) {
-  initAudio();
-  if(id==='s-home') playDoorSound();
-  screens.forEach(s => document.getElementById(s).classList.toggle('active', s===id));
-  navIds.forEach((n,i) => document.getElementById(n).classList.toggle('active', screens[i]===id));
-  const el = document.getElementById(id);
-  if(el) el.scrollTop = 0;
-}
+const SINS=[{id:'pride',icon:'👑',name:'Гордыня',weight:3},{id:'greed',icon:'💰',name:'Алчность',weight:2},{id:'lust',icon:'🔥',name:'Похоть',weight:3},{id:'envy',icon:'💚',name:'Зависть',weight:2},{id:'gluttony',icon:'🍖',name:'Чревоугодие',weight:1},{id:'wrath',icon:'⚡',name:'Гнев',weight:2},{id:'sloth',icon:'😴',name:'Уныние',weight:1},{id:'lie',icon:'🗣️',name:'Ложь',weight:2}];
+const TIERS={free:{label:'FREE',cls:'tier-free',name:'Обычный грешник',perks:'Базовые молитвы',bonus:1.0},silver:{label:'SILVER',cls:'tier-silver',name:'Серебряный',perks:'1 грех/день',bonus:1.1},gold:{label:'GOLD',cls:'tier-gold',name:'Золотой',perks:'3 греха/день',bonus:1.25},plat:{label:'PLATINUM',cls:'tier-plat',name:'Платиновый',perks:'∞ грехи',bonus:1.5},vip:{label:'VIP',cls:'tier-vip',name:'VIP ✦',perks:'Автопрощение',bonus:3.0}};
+const VERDICTS=[[0,0,'Праведник'],[1,10,'Слегка запятнан'],[11,20,'Грешник'],[21,35,'Заядлый'],[36,50,'Одержимый'],[51,70,'В ад'],[71,90,'Любимец дьявола'],[91,100,'Дьявол завидует']];
+const QUESTS=[{id:'q1',icon:'🙏',name:'Помолись 2 раза',target:2,key:'prayCount',reward:'50 XP'},{id:'q2',icon:'⚡',name:'5 грехов',target:5,key:'sinTotal',reward:'20 XP'},{id:'q3',icon:'📿',name:'3 молитвы',target:3,key:'prayCount',reward:'Индульгенция'}];
+const LB=[{rank:1,av:'😇',name:'Иван П.',score:9840},{rank:2,av:'🙏',name:'Мария С.',score:8120},{rank:3,av:'👼',name:'Николай',score:7350},{rank:4,av:'🕊️',name:'Анна',score:6800}];
+const IND_OFFERS=[{name:'Малая',desc:'5 грехов прощено',price:'49 ₽',sub:'разово'},{name:'Полная',desc:'Все грехи прощены',price:'149 ₽',sub:'−30%'}];
+const PRAYERS_DATA=[{id:'p1',name:'Иисусова',text:'Господи Иисусе Христе Сыне Божий помилуй мя грешного'},{id:'p2',name:'Отче наш',text:'Отче наш иже еси на небесех да святится имя Твое'},{id:'p3',name:'Богородице',text:'Богородице Дево радуйся Благодатная Марие'}];
 
-/* ═════════════════════════════════════════════
-   DATA
-══════════════════════════════════════════════
-const SINS = [
-  {id:'pride',   icon:'👑',name:'Гордыняня',   weight:3},
-  {id:'greed',   icon:'💰',name:'Алчность',  weight:2},
-  {id:'lust',    icon:'🔥',name:'Похоть',    weight:3},
-  {id:'envy',    icon:'💚',name:'Зависть',   weight:2},
-  {id:'gluttony',icon:'🍖',name:'Чревоугодие',weight:1},
-  {id:'wrath',   icon:'⚡',name:'Гнев',      weight:2},
-  {id:'sloth',   icon:'😴',name:'Уныние',     weight:1},
-  {id:'lie',     icon:'🗣️',name:'Ложь',      weight:2},
-];
-const TIERS = {
-  free:  {label:'FREE',    cls:'tier-free',  name:'Обычный грешник',     perks:'Базовые молитвы • Ограничен',       bonus:1.0},
-  silver:{label:'SILVER',  cls:'tier-silver',name:'Серебряный послушник',perks:'1 грех/день • Благодать ×1.1',bonus:1.1},
-  gold:  {label:'GOLD',    cls:'tier-gold',  name:'Золотой прихожанин',  perks:'3 греха/день • Благодать ×1.25',   bonus:1.25},
-  plat:  {label:'PLATINUM',cls:'tier-plat',  name:'Платиновый праведник',perks:'∞ грехи • Благодать ×1.5',bonus:1.5},
-  vip:   {label:'VIP',     cls:'tier-vip',   name:'VIP Blessed ✦',     perks:'Автопрощение • Благодать ×3',        bonus:3.0},
-};
-const VERDICTS=[[0,0,'Праведник'],[1,10,'Слегка запятнан'],[11,20,'Грешник'],[21,35,'Заядлый грешник'],[36,50,'Одержимый'],[51,70,'Добро пожаловать в ад'],[71,90,'Любимец дьявола'],[91,100,'Дьявол завидует']];
-const QUESTS=[
-  {id:'q1',icon:'🙏',name:'Помолись 2 раза',  target:2,key:'prayCount',reward:'50 XP'},
-  {id:'q2',icon:'⚡',name:'Исповедай 5 грехов',target:5,key:'sinTotal', reward:'20 XP'},
-  {id:'q3',icon:'📿',name:'Прочти молитву 3×',  target:3,key:'prayCount', reward:'Индульгенция'},
-];
-const LB=[
-  {rank:1,av:'😇',name:'Иван П.',    score:9840,badge:'GOLD'},
-  {rank:2,av:'🙏',name:'Мария С.',   score:8120,badge:'PLAT'},
-  {rank:3,av:'👼',name:'Николай В.',score:7350,badge:'SILVER'},
-  {rank:4,av:'🕊️',name:'Анна К.',    score:6800,badge:'GOLD'},
-];
-const IND_OFFERS=[
-  {name:'Малая Индульгенция',   desc:'Прощает до 5 грехов немедленно.',          price:'49 ₽', sub:'разовый платёж'},
-  {name:'Полная Индульгенция',  desc:'Все грехи прощены.',            price:'149 ₽',sub:'только сейчас −30%'},
-  {name:'Недельная Индульгенция',desc:'7 дней прощения без последствий.',price:'399 ₽',sub:'самое выгодное'},
-  {name:'Вечная Индульгенция™',desc:'Прощение навсегда. NFT-сертификат в комплекте.',price:'9990 ₽',sub:'лимитировано'},
-];
-const PRAYERS_DATA=[
-  {id:'p1',name:'Иисусова',   text:'Господи Иисусе Христе Сыне Божий помилуй мя грешного'},
-  {id:'p2',name:'Отче наш',   text:'Отче наш иже еси на небесех да святится имя Твое да приидет Царствие Твое да будет воля Твоя яко на небеси хлеб наш насущный даждь днесь и остави нам долги наша якоже и мы оставляем должником нашим и не введи нас во искушение но избави нас от лукавого'},
-  {id:'p3',name:'Богородице', text:'Богородице Дево радуйся Благодатная Марие Господь с Тобою благословена Ты в женах и благословен плод чрева Твоего яко Спаса родила еси душ наших'},
-];
-
-/* ═════════════════════════════════════════════
-   STATE
-════════════════════════════════════════════
-const today = new Date().toDateString();
-let counts = JSON.parse(localStorage.getItem('sins_counts')||'{}');
+const today=new Date().toDateString();
+let counts=JSON.parse(localStorage.getItem('sins_counts')||'{}');
 if(localStorage.getItem('sins_date')!==today){counts={};localStorage.setItem('sins_date',today);}
 SINS.forEach(s=>{if(!counts[s.id])counts[s.id]=0;});
-let tier    = localStorage.getItem('user_tier')||'free';
-let xp      = parseInt(localStorage.getItem('user_xp')||'0');
-let streak  = parseInt(localStorage.getItem('user_streak')||'1');
-let questProg = JSON.parse(localStorage.getItem('quest_prog')||'{}');
+let tier=localStorage.getItem('user_tier')||'free',xp=parseInt(localStorage.getItem('user_xp')||'0'),streak=parseInt(localStorage.getItem('user_streak')||'1'),questProg=JSON.parse(localStorage.getItem('quest_prog')||'{}');
 QUESTS.forEach(q=>{if(!questProg[q.id])questProg[q.id]=0;});
+let indTimerInt=null,popupTmt=null;
+function save(){localStorage.setItem('sins_counts',JSON.stringify(counts));localStorage.setItem('quest_prog',JSON.stringify(questProg));localStorage.setItem('user_xp',xp);localStorage.setItem('user_tier',tier);}
 
-let indTimerInt = null, popupTmt = null;
-function save(){
-  localStorage.setItem('sins_counts',JSON.stringify(counts));
-  localStorage.setItem('quest_prog',JSON.stringify(questProg));
-  localStorage.setItem('user_xp',xp);
-  localStorage.setItem('user_tier',tier);
-}
-
-/* ═══════════════════════════════════════════
-   HELPERS
-══════════════════════════════════════════
+function getTotal(){return SINS.reduce((s,sin)=>s+(counts[sin.id]||0),0);}
+function getWeighted(){return SINS.reduce((s,sin)=>s+(counts[sin.id]||0)*sin.weight,0);}
+function getHellPct(){return Math.min(100,Math.round(getWeighted()/0.6));}
+function getVerdict(p){for(const[lo,hi,v]of VERDICTS)if(p>=lo&&p<=hi)return v;return VERDICTS[VERDICTS.length-1][2];}
+function rand(a){return a[Math.floor(Math.random()*a.length)];}
 function norm(w){return w.toLowerCase().replace(/[^а-яёa-z]/g,'').replace(/ё/g,'е');}
+function editDist(a,b){const m=a.length,n=b.length,dp=Array.from({length:m+1},(_,i)=>Array.from({length:n+1},(_,j)=>i===0?j:j===0?i:0));for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);return dp[m][n];}
 
-/* ═════════════════════════════════════════════
-   RENDER SINS SCREEN
-══════════════════════════════════════════
-function renderStatus(){
-  const t=TIERS[tier];
-  const tb=document.getElementById('tierBadge');
-  tb.className='tier-badge '+t.cls; tb.textContent=t.label;
-  document.getElementById('statusName').textContent=t.name;
-  document.getElementById('statusPerks').textContent=t.perks;
-}
-function renderXP(){
-  document.getElementById('xpNum').textContent=xp+' XP';
-  document.getElementById('xpBar').style.width=Math.min(100,xp%100)+'%';
-  document.getElementById('streakNum').textContent=streak;
-}
-function renderDays(){
-  const days=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];
-  const dow=new Date().getDay();
-  const todayIdx=(dow+6)%7;
-  let html='';
-  for(let i=0;i<7;i++){
-    const done=i<todayIdx&&i<streak;
-    const isToday=i===todayIdx;
-    const cls=done?'done':isToday?'today':'future';
-    const icon=done?'✓':isToday?'🔥':'';
-    html+=`<div class="day-pill"><div class="day-circle ${cls}">${icon}</div><div class="day-name">${days[i]}</div></div>`;
-  }
-  document.getElementById('daysRow').innerHTML=html;
-}
-function renderSins(){
-  document.getElementById('sinsGrid').innerHTML=SINS.map(sin=>`
-    <div class="sin-card" id="card-${sin.id}">
-      <span class="sin-icon">${sin.icon}</span>
-      <span class="sin-name">${sin.name}</span>
-      <div class="sin-count" id="cnt-${sin.id}">${counts[sin.id]}</div>
-      <div class="sin-btn-row">
-        <button class="btn-minus" onclick="changeSin('${sin.id}',-1,event)">−</button>
-        <button class="btn-plus"  onclick="changeSin('${sin.id}',+1,event)">+</button>
-      </div>
-    </div>`).join('');
-}
-function renderTotal(){
-  const t=getTotal();
-  const el=document.getElementById('totalCount');
-  el.textContent=t; el.classList.add('bump'); setTimeout(()=>el.classList.remove('bump'),300);
-  const msgs=[[0,0,'Начни с чистого листа...'],[1,5,'Небольшие погрешности...'],[6,15,'Задумайся о молитве.'],[16,30,'Пора исповедаться.'],[31,50,'Ты идёшь прямо вниз.'],[51,100,'Ад ждёт тебя.'],[101,999,'Дьявол готовит комнату.'];
-  for(const[lo,hi,txt]of msgs)if(t>=lo&&t<=hi){document.getElementById('totalText').textContent=txt;break;}
-}
-function renderChart(){
-  const pct=getHellPct(),c=376.9;
-  document.getElementById('hellArc').style.strokeDashoffset=c-c*pct/100;
-  document.getElementById('hellPct').textContent=pct+'%';
-  document.getElementById('hellVerdict').textContent=getVerdict(pct);
-  const max=Math.max(1,...SINS.map(s=>counts[s.id]||0));
-  document.getElementById('barChart').innerHTML=SINS.map(s=>{
-    const h=Math.round(((counts[s.id]||0)/max)*54);
-    return`<div class="bar-wrap"><div class="bar" style="height:${Math.max(2,h)}px"></div><div class="bar-label">${s.icon}</div></div>`;
-  }).join('');
-}
-function renderQuests(){
-  questProg.sinTotal=getTotal();
-  document.getElementById('questsList').innerHTML=QUESTS.map(q=>{
-    const prog=Math.min(q.target,questProg[q.id]||0),done=prog>=q.target,pct=(prog/q.target)*100;
-    return`<div class="quest-item"><span class="quest-icon">${q.icon}</span><div class="quest-info"><div class="quest-name ${done?'quest-done-name':''}">${q.name}</div><div class="quest-prog-bar"><div class="quest-prog-fill" style="width:${pct}%"></div></div></div><div class="quest-reward">${done?'✓':q.reward}</div></div>`;
-  }).join('');
-}
-function renderLB(){
-  LB[2].score=xp;
-  document.getElementById('lbList').innerHTML=LB.map((u,i)=>`
-    <div class="lb-item">
-      <div class="lb-rank ${i===0?'gold':''}">${i+1}</div>
-      <div class="lb-avatar">${u.av}</div>
-      <div class="lb-info"><div class="lb-name">${u.name} ${u.you?'<span class="lb-you">ВЫ</span>':''}</div>
-      <div class="lb-stat">${u.score} XP</div>
-    </div></div>`).join('');
-}
-function renderAll(){
-  renderStatus();renderXP();renderDays();renderSins();renderTotal();renderChart();renderQuests();renderLB();
-}
-function changeSin(id,delta,e){
-  e.stopPropagation();
-  counts[id]=Math.max(0,(counts[id]||0)+delta);
-  document.getElementById('cnt-'+id).textContent=counts[id];
-  if(delta>0){
-    const card=document.getElementById('card-'+id);
-    card.classList.add('flash');setTimeout(()=>card.classList.remove('flash'),300);
-    playSinSound();
-    spawnP(3);
-    setMood('angry',rand(['...записано.','ХУХ. Серьёзно?','Ад расширяется.','Купи индульгенцию.','Дьявол доволен.']));
-    showPopup(rand(['Грех зафиксирован.','Ещё один? Молитвы ждут.','Сова недовольна.']));
-    questProg.sinTotal=getTotal();
-    if(tier==='free'&&getTotal()>0&&getTotal()%5===0)setTimeout(()=>showIndulgence(),1500);
-  }
-  save(); renderTotal(); renderChart(); renderQuests(); renderLB();
-}
-function resetDay(){
-  if(!confirm('Новый день?'))return;
-  SINS.forEach(s=>counts[s.id]=0);
-  QUESTS.forEach(q=>questProg[q.id]=0);
-  save(); renderAll();
-  setMood('idle','Новый день. Сова ждёт.');
-}
+function renderStatus(){const t=TIERS[tier],tb=document.getElementById('tierBadge');tb.className='tier-badge '+t.cls;tb.textContent=t.label;document.getElementById('statusName').textContent=t.name;document.getElementById('statusPerks').textContent=t.perks;}
+function renderXP(){document.getElementById('xpNum').textContent=xp+' XP';document.getElementById('xpBar').style.width=Math.min(100,xp%100)+'%';document.getElementById('streakNum').textContent=streak;}
+function renderDays(){const days=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'],dow=new Date().getDay(),todayIdx=(dow+6)%7;let html='';for(let i=0;i<7;i++){const done=i<todayIdx&&i<streak,isToday=i===todayIdx,cls=done?'done':isToday?'today':'future',icon=done?'✓':isToday?'🔥':'';html+=`<div class="day-pill"><div class="day-circle ${cls}">${icon}</div><div class="day-name">${days[i]}</div></div>`;}document.getElementById('daysRow').innerHTML=html;}
+function renderSins(){document.getElementById('sinsGrid').innerHTML=SINS.map(sin=>`<div class="sin-card" id="card-${sin.id}"><span class="sin-icon">${sin.icon}</span><span class="sin-name">${sin.name}</span><div class="sin-count" id="cnt-${sin.id}">${counts[sin.id]}</div><div class="sin-btn-row"><button class="btn-minus" onclick="changeSin('${sin.id}',-1,event)">−</button><button class="btn-plus" onclick="changeSin('${sin.id}',+1,event)">+</button></div></div>`).join('');}
+function renderTotal(){const t=getTotal(),el=document.getElementById('totalCount');el.textContent=t;el.classList.add('bump');setTimeout(()=>el.classList.remove('bump'),300);const msgs=[[0,0,'Начни с чистого...'],[1,5,'Небольшие погрешности...'],[6,15,'Задумайся о молитве.'],[16,30,'Пора исповедаться.'],[31,50,'Ты идёшь вниз.'],[51,100,'Ад ждёт.'],[101,999,'Дьявол готовит комнату.']];for(const[lo,hi,txt]of msgs)if(t>=lo&&t<=hi){document.getElementById('totalText').textContent=txt;break;}}
+function renderChart(){const pct=getHellPct(),c=376.9;document.getElementById('hellArc').style.strokeDashoffset=c-c*pct/100;document.getElementById('hellPct').textContent=pct+'%';document.getElementById('hellVerdict').textContent=getVerdict(pct);const max=Math.max(1,...SINS.map(s=>counts[s.id]||0));document.getElementById('barChart').innerHTML=SINS.map(s=>{const h=Math.round(((counts[s.id]||0)/max)*54);return`<div class="bar-wrap"><div class="bar" style="height:${Math.max(2,h)}px"></div><div class="bar-label">${s.icon}</div></div>`;}).join('');}
+function renderQuests(){questProg.sinTotal=getTotal();document.getElementById('questsList').innerHTML=QUESTS.map(q=>{const prog=Math.min(q.target,questProg[q.id]||0),done=prog>=q.target,pct=(prog/q.target)*100;return`<div class="quest-item"><span class="quest-icon">${q.icon}</span><div class="quest-info"><div class="quest-name ${done?'quest-done-name':''}">${q.name}</div><div class="quest-prog-bar"><div class="quest-prog-fill" style="width:${pct}%"></div></div></div><div class="quest-reward">${done?'✓':q.reward}</div></div>`;}).join('');}
+function renderLB(){LB[2].score=xp;document.getElementById('lbList').innerHTML=LB.map((u,i)=>`<div class="lb-item"><div class="lb-rank ${i===0?'gold':''}">${i+1}</div><div class="lb-avatar">${u.av}</div><div class="lb-info"><div class="lb-name">${u.name}</div><div class="lb-stat">${u.score} XP</div></div></div>`).join('');}
 function renderAll(){renderStatus();renderXP();renderDays();renderSins();renderTotal();renderChart();renderQuests();renderLB();}
 
-/* ═══════════════════════════════════════
-   SPEECH RECOGNITION
-════════════════════════════════════════════
+function changeSin(id,delta,e){e.stopPropagation();counts[id]=Math.max(0,(counts[id]||0)+delta);document.getElementById('cnt-'+id).textContent=counts[id];if(delta>0){const card=document.getElementById('card-'+id);card.classList.add('flash');setTimeout(()=>card.classList.remove('flash'),300);spawnP(3);setMood('angry',rand(['...записано.','ХУХ.','Ад расширяется.','Купи индульгенцию.']));showPopup(rand(['Грех зафиксирован.','Ещё один?','Сова недовольна.']));questProg.sinTotal=getTotal();if(tier==='free'&&getTotal()>0&&getTotal()%5===0)setTimeout(()=>showIndulgence(),1500);}save();renderTotal();renderChart();renderQuests();renderLB();}
+function resetDay(){if(!confirm('Новый день?'))return;SINS.forEach(s=>counts[s.id]=0);QUESTS.forEach(q=>questProg[q.id]=0);save();renderAll();setMood('idle','Новый день. Сова ждёт.');}
+
+const MOUTHS={idle:'M40,68 Q50,62 60,68',listen:'M42,66 Q50,66 58,66',happy:'M40,64 Q50,72 60,64',angry:'M40,70 Q50,65 60,70'};
+const IRISES={idle:'#cc0000',listen:'#ff8800',happy:'#00cc00',angry:'#ff0000'};
+function setMood(mood,text){const svg=document.getElementById('owlSvg');if(svg)svg.className.baseVal='owl-mini-svg '+mood;const m=document.getElementById('owlMouth');if(m)m.setAttribute('d',MOUTHS[mood]||MOUTHS.idle);const c=IRISES[mood]||'#cc0000';['owlIrisL','owlIrisR'].forEach(id=>{const el=document.getElementById(id);if(el)el.setAttribute('fill',c);});if(text)document.getElementById('owlText').textContent=text;}
+function owlClicked(){const t=getTotal();const phrase=t===0?rand(['Пока чист.','Хух. Посмотрим.']):t<5?rand(['Неплохо.','Читай молитвы.']):rand(['ХУХ ХУХ.','Иди молиться.','Разочаровал.']);showPopup(phrase);if(t>=5){setMood('angry',phrase);setTimeout(()=>setMood('idle','Сова следит.'),2500);}}
+const OWL_IDLE=['Я слежу.','Читай молитвы.','Хух.','Ты молился?','Сова не дремлет.'];
+setInterval(()=>{if(Math.random()<.25)setMood('idle',rand(OWL_IDLE));},9000);
+function showPopup(text){clearTimeout(popupTmt);document.getElementById('popupText').textContent=text;document.getElementById('owlPopup').classList.add('show');popupTmt=setTimeout(()=>document.getElementById('owlPopup').classList.remove('show'),4000);}
+function closePopup(){document.getElementById('owlPopup').classList.remove('show');}
+const HOME_PHRASES=['Я жду выбора.','Куда пойдём?','Хух. Выбирай.','Сова рекомендует грехи.'];
+let homeTmt;
+function petHomeOwl(){const tip=document.getElementById('homeTooltip');tip.textContent=rand(HOME_PHRASES);tip.classList.add('show');clearTimeout(homeTmt);homeTmt=setTimeout(()=>tip.classList.remove('show'),2500);}
+
+function purchase(t){tier=t;save();renderAll();const msgs={silver:'Серебро!',gold:'Золото!',plat:'Платина!',vip:'VIP!'};showPopup(msgs[t]);setMood('happy',msgs[t]);xp+=50;renderXP();goTo('s-sins');}
+
+function showIndulgence(){const offer=IND_OFFERS[Math.floor(Math.random()*IND_OFFERS.length)];document.getElementById('indName').textContent=offer.name;document.getElementById('indDesc').textContent=offer.desc;document.getElementById('indPrice').textContent=offer.price;document.getElementById('indSub').textContent=offer.sub;document.getElementById('skipBtn').style.display='none';const screen=document.getElementById('indScreen');screen.classList.add('show');let secs=8,cd=secs;document.getElementById('indCountdown').textContent='0:0'+cd;clearInterval(indTimerInt);indTimerInt=setInterval(()=>{cd--;document.getElementById('indCountdown').textContent='0:'+(cd<10?'0':'')+cd;if(cd<=0){clearInterval(indTimerInt);document.getElementById('skipBtn').style.display='block';}},1000);}
+function buyIndulgence(){closeIndulgence();SINS.forEach(s=>counts[s.id]=0);save();renderAll();showPopup('Все грехи прощены.');setMood('happy','Индульгенция принята.');spawnP(8);}
+function closeIndulgence(){clearInterval(indTimerInt);document.getElementById('indScreen').classList.remove('show');}
+
 let curPrayer=0,words=[],wordIdx=0,correct=0,wrong=0,listening=false,recognition=null,transcript='';
+function spSetMood(mood,text){const svg=document.getElementById('speechOwl');if(svg)svg.className.baseVal='owl-mini-svg '+mood;const m=document.getElementById('spMouth');if(m)m.setAttribute('d',MOUTHS[mood]||MOUTHS.idle);const c=IRISES[mood]||'#cc0000';['spIrisL','spIrisR'].forEach(id=>{const el=document.getElementById(id);if(el)el.setAttribute('fill',c);});document.getElementById('speechRings').classList.toggle('active',mood==='listen');if(text)document.getElementById('speechBubble').textContent=text;}
+function buildPrayerTabs(){document.getElementById('prayerTabs').innerHTML=PRAYERS_DATA.map((p,i)=>`<div class="prayer-tab${i===0?' active':''}" onclick="loadPrayer(${i})">${p.name}</div>`).join('');}
+function loadPrayer(idx){curPrayer=idx;const p=PRAYERS_DATA[idx];document.getElementById('prayerTitle').textContent=p.name;words=p.text.split(' ').map(w=>({text:w,norm:norm(w),state:'pending'}));wordIdx=0;correct=0;wrong=0;transcript='';renderWords();renderScores();renderProg();document.getElementById('recognizedBox').innerHTML='Сова ещё ничего не слышала...';hideResult();stopListening();updateBtn(false);document.getElementById('progFill').classList.remove('green');document.querySelectorAll('.prayer-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));spSetMood('idle','Нажми кнопку и читай вслух.');}
+function renderWords(){document.getElementById('prayerWords').innerHTML=words.map((w,i)=>`<span class="word ${w.state}" id="w${i}">${w.text} </span>`).join('');}
+function setWordState(idx,state){if(idx>=words.length)return;words[idx].state=state;const el=document.getElementById('w'+idx);if(el)el.className='word '+state;}
+function renderScores(){document.getElementById('scCorrect').textContent=correct;document.getElementById('scWrong').textContent=wrong;const t=correct+wrong;document.getElementById('scPct').textContent=t>0?Math.round(correct/t*100)+'%':'—';}
+function renderProg(){const pct=words.length>0?Math.round(correct/words.length*100):0;document.getElementById('progFill').style.width=pct+'%';document.getElementById('progText').textContent=correct+' / '+words.length+' слов';}
+function hideResult(){document.getElementById('resultBanner').classList.remove('show','pass','fail');}
+function setupRecognition(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return false;recognition=new SR();recognition.lang='ru-RU';recognition.continuous=true;recognition.interimResults=true;recognition.maxAlternatives=3;recognition.onstart=()=>{listening=true;updateBtn(true);spSetMood('listen','Слушаю... Читай медленно.');spawnP(2);};recognition.onresult=(e)=>{let interim='';for(let i=e.resultIndex;i<e.results.length;i++){const r=e.results[i];if(r.isFinal){const t=r[0].transcript;transcript+=' '+t;processTranscript(t);}else interim+=r[0].transcript;}document.getElementById('recognizedBox').innerHTML='<span>'+(transcript+' '+interim).trim()+'</span>';};recognition.onerror=(e)=>{if(e.error==='not-allowed'){spSetMood('angry','Доступ к микрофону запрещён!');document.getElementById('speechBubble').textContent='Разреши микрофон в Chrome.';}else if(e.error==='no-speech'){spSetMood('angry','Я ничего не слышу. Говори громче!');}stopListening();};recognition.onend=()=>{if(listening)try{recognition.start();}catch(err){}};return true;}
+function processTranscript(text){const spoken=text.trim().split(/\s+/).map(norm).filter(Boolean);for(const sp of spoken){if(wordIdx>=words.length)break;setWordState(wordIdx,'current');const exp=words[wordIdx].norm;const match=sp===exp||editDist(sp,exp)<=2;if(match){setWordState(wordIdx,'correct');correct++;wordIdx++;if(wordIdx<words.length)setWordState(wordIdx,'current');if(wordIdx>=words.length){finishPrayer();return;}}else{setWordState(wordIdx,'wrong');wrong++;let found=-1;for(let j=wordIdx+1;j<Math.min(wordIdx+4,words.length);j++){if(sp===words[j].norm||editDist(sp,words[j].norm)<=1){found=j;break;}}if(found!==-1){for(let j=wordIdx;j<found;j++)setWordState(j,'wrong');wordIdx=found;setWordState(wordIdx,'correct');correct++;wordIdx++;if(wordIdx<words.length)setWordState(wordIdx,'current');if(wordIdx>=words.length){finishPrayer();return;}}else{wordIdx++;if(wordIdx<words.length)setWordState(wordIdx,'current');}}renderScores();renderProg();}const pct=words.length>0?correct/words.length:0;if(pct>.7&&listening)spSetMood('listen','Хорошо! Продолжай...');else if(wrong>3&&listening)spSetMood('listen','Медленнее. Чётко.');}
+function finishPrayer(){stopListening();renderScores();renderProg();document.getElementById('progFill').classList.add('green');const pct=Math.round(correct/words.length*100);const banner=document.getElementById('resultBanner');banner.classList.remove('pass','fail');if(pct>=70){banner.classList.add('show','pass');document.getElementById('resultIcon').textContent='✝';document.getElementById('resultTitle').textContent='Молитва засчитана';document.getElementById('resultTitle').className='result-title pass';document.getElementById('resultDetail').textContent='Точность: '+pct+'%. '+(pct===100?'Идеально!':pct>=90?'Почти безупречно.':'Хорошо.');spSetMood('happy','✝ Принято! '+pct+'%.');spawnP(6);xp+=Math.round(30*TIERS[tier].bonus);questProg.prayCount=(questProg.prayCount||0)+1;renderXP();renderQuests();save();showPopup('+'+Math.round(30*TIERS[tier].bonus)+' XP ✦');}else{banner.classList.add('show','fail');document.getElementById('resultIcon').textContent='😤';document.getElementById('resultTitle').textContent='Недостаточно хорошо';document.getElementById('resultTitle').className='result-title fail';document.getElementById('resultDetail').textContent='Точность: '+pct+'%. Нужно 70%. Читай ещё раз.';spSetMood('angry','ХУХ. '+pct+'% — позор. Заново.');playAngrySound();}}
+function toggleListening(){initAudio();if(!recognition&&!setupRecognition()){document.getElementById('speechBubble').textContent='Распознавание не поддерживается. Используй Chrome.';return;}if(listening){stopListening();spSetMood('idle','Остановлено.');}else{hideResult();if(wordIdx===0){words.forEach((_,i)=>setWordState(i,'pending'));correct=0;wrong=0;transcript='';renderScores();renderProg();}setWordState(wordIdx,'current');try{recognition.start();}catch(e){setupRecognition();try{recognition.start();}catch(e2){}}}}
+function stopListening(){listening=false;updateBtn(false);document.getElementById('speechRings').classList.remove('active');if(recognition)try{recognition.stop();}catch(e){}}
+function updateBtn(on){document.getElementById('btnListen').classList.toggle('on',on);document.getElementById('btnText').textContent=on?'Остановить':'Начать чтение';}
+function resetPrayer(){stopListening();loadPrayer(curPrayer);}
 
-function spSetMood(mood, text) {
-  const svg = document.getElementById('speechOwl');
-  if(svg) svg.className.baseVal = 'owl-mini-svg ' + mood;
-  const m = document.getElementById('spMouth');
-  if(m) m.setAttribute('d', MOUTHS[mood]||MOUTHS.idle);
-  const c = IRISES[mood] || '#cc0000';
-  ['spIrisL','spIrisR'].forEach(id => { const el = document.getElementById(id); if(el) el.setAttribute('fill', c); });
-  
-  // SOUND WAVES LOGIC
-  const rings = document.getElementById('speechRings');
-  if (mood === 'listen') {
-    rings.classList.add('active');
-    rings.style.opacity = '1';
-    clearTimeout(window._waveTimeout);
-    window._waveTimeout = setTimeout(() => {
-      rings.style.opacity = '0';
-      rings.classList.remove('active');
-    }, 350);
-  } else {
-    clearTimeout(window._waveTimeout);
-    rings.style.opacity = '0';
-    setTimeout(() => rings.classList.remove('active'), 350);
-  }
-  if(text) document.getElementById('speechBubble').textContent = text;
-}
-function setupRecognition() {
-  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if(!SR) return false;
-  recognition = new SR();
-  recognition.lang = 'ru-RU';
-  recognition.continuous = true;
-  recognition.interimResults = true;
-  recognition.maxAlternatives = 3;
-  recognition.onstart = () => {
-    listening = true; updateBtn(true);
-    spSetMood('listen','Слушаю... Читай вслух, медленно и чётко.');
-    spawnP(2);
-  };
-  recognition.onresult = (e) => {
-    let interim = '';
-    for(let i = e.resultIndex; i < e.results.length; i++){
-      const r = e.results[i];
-      if(r.isFinal) { const t = r[0].transcript; transcript += ' ' + t; processTranscript(t); }
-      else interim += r[0].transcript;
-    }
-    document.getElementById('recognizedBox').innerHTML = '<span>'+(transcript+' '+interim).trim()+'</span>';
-  };
-  recognition.onerror = (e) => {
-    if(e.error==='not-allowed'){
-      spSetMood('angry','Доступ к микрофону запрещён! Открой в настройках Chrome.');
-      document.getElementById('speechBubble').textContent='Разреши микрофон в настройках Chrome.';
-    } else if(e.error==='no-speech'){
-      spSetMood('angry','Я ничего не слышу. Говори громче!');
-    } else {
-      spSetMood('angry','Ошибка: '+e.error);
-    }
-    stopListening();
-  };
-  recognition.onend = () => { if(listening) try { recognition.start(); } catch(err){} };
-  return true;
-}
-function processTranscript(text){
-  const spoken = text.trim().split(/\s+/).map(norm).filter(Boolean);
-  for(const sp of spoken){
-    if(wordIdx >= words.length) break;
-    setWordState(wordIdx, 'current');
-    const exp = words[wordIdx].norm;
-    const maxDist = exp.length <= 3 ? 1 : 2;
-    const match = sp === exp || editDist(sp, exp) <= maxDist;
-    if(match){
-      setWordState(wordIdx, 'correct'); correct++; wordIdx++;
-      setWordState(wordIdx, 'current');
-      if(wordIdx >= words.length){ finishPrayer(); return; }
-    } else {
-      setWordState(wordIdx, 'wrong'); wrong++;
-      let found = -1;
-      for(let j = wordIdx+1; j < Math.min(wordIdx+4, words.length); j++){
-        if(sp === words[j].norm || editDist(sp, words[j].norm) <= 1){ found = j; break; }
-      }
-      if(found !== -1){
-        for(let j = wordIdx; j < found; j++) setWordState(j, 'wrong');
-        wordIdx = found; setWordState(wordIdx, 'correct'); correct++; wordIndex++;
-        setWordState(wordIndex, 'current');
-        if(wordIndex >= words.length){ finishPrayer(); return; }
-      } else { wordIndex++; setWordState(wordIndex, 'current'); }
-    }
-    renderScores(); renderProg();
-  }
-  const pct = words.length > 0 ? correct / words.length : 0;
-  if(pct > .7 && listening) spSetMood('listen','Хорошо читаешь! Продолжай...');
-  else if(wrong > 3 && listening) spSetMood('listen','Медленнее. Выговаривай каждое слово.');
-}
-function finishPrayer(){
-  stopListening(); renderScores(); renderProg();
-  document.getElementById('progFill').classList.add('green');
-  const pct = Math.round(correct / words.length * 100);
-  const banner = document.getElementById('resultBanner');
-  banner.classList.remove('pass', 'fail');
-  if(pct >= 70){
-    banner.classList.add('show', 'pass');
-    document.getElementById('resultIcon').textContent = '✝';
-    document.getElementById('resultTitle').textContent = 'Молитва засчитана';
-    document.getElementById('resultTitle').className = 'result-title pass';
-    document.getElementById('resultDetail').textContent = 'Точность: '+pct+'%. '+(pct===100?'Идеально!':pct>=90?'Почти безупречно.':'Хорошая работа.');
-    spSetMood('happy', '✝ Принято! Точность '+pct+'%. Сова довольна.');
-    playPrayerDoneSound(); spawnP(6);
-    xp += Math.round(30 * TIERS[tier].bonus);
-    questProg.prayCount = (questProg.prayCount || 0) + 1;
-    renderXP(); renderQuests(); save();
-    showPopup('+' + Math.round(30 * TIERS[tier].bonus) + ' XP духовности ✦');
-  } else {
-    banner.classList.add('show', 'fail');
-    document.getElementById('resultIcon').textContent = '😤';
-    document.getElementById('resultTitle').textContent = 'Недостаточно хорошо';
-    document.getElementById('resultTitle').className = 'result-title fail';
-    document.getElementById('resultDetail').textContent = 'Точность: '+pct+'%. Нужно минимум 70%. Читай ещё раз.';
-    spSetMood('angry', 'ХУХ. '+pct+'% — это позор. Заново.');
-    playAngrySound();
-  }
-}
-function toggleListening(){
-  if(!recognition && !setupRecognition()) {
-    document.getElementById('speechBubble').textContent = 'Распознавание речи не поддерживается. Используй Chrome.';
-    return;
-  }
-  initAudio();
-  if(listening) { stopListening(); spSetMood('idle', 'Остановлено.'); }
-  else {
-    hideResult();
-    if(wordIndex === 0){ words.forEach((_, i) => setWordState(i, 'pending')); correct=0; wrong=0; transcript=''; renderScores(); renderProg(); }
-    setWordState(wordIndex, 'current');
-    try { recognition.start(); } catch(e) { setupRecognition(); try { recognition.start(); } catch(e2) {} }
-  }
-}
-function stopListening(){
-  listening = false; updateBtn(false);
-  document.getElementById('speechRings').classList.remove('active');
-  if(recognition) try { try{recognition.stop();}catch(e){} }
-}
-function updateBtn(on){
-  document.getElementById('btnListen').classList.toggle('on', on);
-  document.getElementById('btnText').textContent = on ? 'Остановить' : 'Начать чтение';
-}
-function resetPrayer(){ stopListening(); loadPrayer(curPrayer); }
-
-/* ═════════════════════════════════════════════════
-   PARTICLES & MISC
-═════════════════════════════════════════════════
-function spawnP(n){
-  for(let i=0;i<n;i++) setTimeout(()=>{
-    const p=document.createElement('div'); p.className='particle';
-    p.style.cssText=`left:${Math.random()*window.innerWidth}px;--d:${(Math.random()-.5)*80}px;animation-duration:${2+Math.random()*2}s;width:${3+Math.random()*3}px;height:${3+Math.random()*3}px;`;
-    document.getElementById('particles').appendChild(p);
-    setTimeout(()=>p.remove(),4500);
-  },i*120);
-}
+function spawnP(n){for(let i=0;i<n;i++)setTimeout(()=>{const p=document.createElement('div');p.className='particle';p.style.cssText=`left:${Math.random()*window.innerWidth}px;--d:${(Math.random()-.5)*80}px;animation-duration:${2+Math.random()*2}s;width:${3+Math.random()*3}px;height:${3+Math.random()*3}px;`;document.getElementById('particles').appendChild(p);setTimeout(()=>p.remove(),4500);},i*120);}
 setInterval(()=>{if(getTotal()>0)spawnP(1);},1400);
 
-/* ════════════════════════════════════════════
-   BOOT
-═════════════════════════════════════════════ */
-renderAll();
-buildPrayerTabs();
-loadPrayer(0);
-setTimeout(()=>showPopup('Добро пожаловать. Сова наблюдает.'), 1200);
-setTimeout(()=>{if(tier==='free')showIndulgence();},18000);
+renderAll();buildPrayerTabs();loadPrayer(0);setTimeout(()=>showPopup('Добро пожаловать. Сова наблюдает.'),1200);setTimeout(()=>{if(tier==='free')showIndulgence();},18000);
 </script>
 </body>
 </html>
+
