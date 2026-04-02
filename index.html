@@ -16,16 +16,51 @@
 html,body{height:100%;overflow:hidden;}
 body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;position:relative;}
 
+/* ── FIRE BG ── */
 #fireBg{position:fixed;bottom:0;left:0;right:0;height:40vh;background:radial-gradient(ellipse at 50% 100%,rgba(200,50,0,.22),transparent 70%);pointer-events:none;z-index:0;animation:hellglow 3s ease-in-out infinite alternate;}
 @keyframes hellglow{from{opacity:.5}to{opacity:1}}
+
+/* ── PARTICLES ── */
 .particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
-.particle{position:absolute;bottom:-20px;width:4px;height:4px;border-radius:50%;background:var(--hell);opacity:0;animation:float-up linear infinite;box-shadow:0 0 6px var(--hell);}
+.particle{position:absolute;bottom:-20px;border-radius:50%;background:var(--hell);opacity:0;animation:float-up linear infinite;box-shadow:0 0 6px var(--hell);}
 @keyframes float-up{0%{transform:translateY(0)scale(1);opacity:0}20%{opacity:.5}80%{opacity:.2}100%{transform:translateY(-70vh)translateX(var(--d))scale(.2);opacity:0}}
 
-.screen{position:fixed;inset:0;overflow-y:auto;overflow-x:hidden;padding-bottom:70px;z-index:1;opacity:0;pointer-events:none;transition:opacity .3s ease;}
+/* ── FIRE TRANSITION ── */
+#fireTransition{
+  position:fixed;inset:0;z-index:500;pointer-events:none;
+  background:transparent;
+  display:flex;align-items:flex-end;
+  overflow:hidden;
+}
+.fire-wave{
+  position:absolute;bottom:0;left:0;right:0;
+  height:0%;
+  background:linear-gradient(to top,#ff2200,#ff6600,#ff9900,#cc0000);
+  transition:none;
+}
+.fire-wave2{
+  position:absolute;bottom:0;left:-10%;right:-10%;
+  height:0%;
+  background:linear-gradient(to top,#cc0000 0%,#ff4400 40%,rgba(255,100,0,.3) 100%);
+  clip-path:polygon(0% 100%,5% 80%,10% 100%,15% 75%,20% 100%,25% 70%,30% 100%,35% 78%,40% 100%,45% 72%,50% 100%,55% 76%,60% 100%,65% 74%,70% 100%,75% 78%,80% 100%,85% 72%,90% 100%,95% 76%,100% 100%);
+  transition:none;
+}
+#fireTransition.ignite .fire-wave{
+  animation:fire-rise .35s ease-in forwards, fire-fall .3s ease-out .45s forwards;
+}
+#fireTransition.ignite .fire-wave2{
+  animation:fire-rise2 .35s ease-in .05s forwards, fire-fall .3s ease-out .4s forwards;
+}
+@keyframes fire-rise{from{height:0%}to{height:110%}}
+@keyframes fire-rise2{from{height:0%}to{height:120%}}
+@keyframes fire-fall{from{height:110%}to{height:0%}}
+
+/* ── SCREENS ── */
+.screen{position:fixed;inset:0;overflow-y:auto;overflow-x:hidden;padding-bottom:70px;z-index:1;opacity:0;pointer-events:none;transition:opacity .15s ease;}
 .screen.active{opacity:1;pointer-events:all;}
 .screen-inner{max-width:480px;margin:0 auto;padding:16px 14px;}
 
+/* ── BOTTOM NAV ── */
 .bnav{position:fixed;bottom:0;left:0;right:0;z-index:50;background:linear-gradient(to top,#060200,rgba(6,2,0,.97));border-top:1px solid rgba(139,0,0,.3);display:flex;}
 .bnav-btn{flex:1;padding:10px 4px 16px;background:none;border:none;color:rgba(212,184,150,.35);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:color .2s;font-family:'Cinzel',serif;position:relative;}
 .bnav-btn.active{color:var(--gold);}
@@ -35,21 +70,31 @@ body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;posit
 .bnav-dot{position:absolute;top:8px;right:calc(50% - 18px);width:8px;height:8px;border-radius:50%;background:var(--blood);animation:blink 1s infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 
+/* ── COMMON ── */
 .page-title{font-family:'UnifrakturMaguntia',cursive;font-size:2.4rem;color:var(--blood);text-shadow:0 0 20px rgba(200,0,0,.6);text-align:center;line-height:1;padding:20px 0 6px;}
 .page-sub{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:5px;color:var(--gold);text-transform:uppercase;text-align:center;margin-bottom:14px;opacity:.8;}
 .orn{border:none;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:12px 0;opacity:.35;}
-
 .card-block{background:linear-gradient(135deg,var(--ash),var(--parchment));border:1px solid rgba(139,0,0,.35);border-radius:12px;padding:16px;margin-bottom:14px;}
 .section-title{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;text-align:center;margin-bottom:12px;}
 
-.home-owl-wrap{width:110px;height:140px;margin:0 auto 16px;cursor:pointer;position:relative;}
-.home-owl-svg{width:100%;height:100%;filter:drop-shadow(0 0 12px rgba(200,0,0,.5));}
-@keyframes owl-idle{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-.home-owl-svg.idle{animation:owl-idle 2.5s ease-in-out infinite;}
+/* ── DEMON OWL ── */
+@keyframes demon-idle{0%,100%{transform:translateY(0) rotate(0deg)}33%{transform:translateY(-4px) rotate(-1deg)}66%{transform:translateY(-2px) rotate(1deg)}}
+@keyframes demon-angry{0%{transform:rotate(-10deg) scale(1.06)}25%{transform:rotate(10deg) scale(1.08)}50%{transform:rotate(-8deg) scale(1.06)}75%{transform:rotate(8deg) scale(1.08)}100%{transform:rotate(0deg) scale(1)}}
+@keyframes demon-happy{0%,100%{transform:scale(1) rotate(0)}25%{transform:scale(1.12) rotate(-6deg)}75%{transform:scale(1.12) rotate(6deg)}}
+@keyframes demon-listen{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes horn-glow{0%,100%{filter:drop-shadow(0 0 4px #ff4400)}50%{filter:drop-shadow(0 0 12px #ff8800)}}
+@keyframes eye-glow{0%,100%{opacity:.7}50%{opacity:1}}
+
+.demon-svg.idle  {animation:demon-idle 2.8s ease-in-out infinite;}
+.demon-svg.angry {animation:demon-angry .35s ease-in-out infinite;}
+.demon-svg.happy {animation:demon-happy .5s ease-in-out 5;}
+.demon-svg.listen{animation:demon-listen .6s ease-in-out infinite;}
+
+/* ── HOME ── */
+.home-owl-wrap{width:130px;height:160px;margin:0 auto 16px;cursor:pointer;position:relative;}
 .home-tooltip{position:absolute;top:-8px;left:50%;transform:translateX(-50%) translateY(-100%);background:linear-gradient(135deg,#0d0500,#1a0a00);border:1px solid rgba(139,0,0,.5);border-radius:8px;padding:8px 14px;white-space:nowrap;font-style:italic;font-size:.78rem;color:var(--bone);opacity:0;pointer-events:none;transition:opacity .3s;}
 .home-tooltip.show{opacity:1;}
-
-.nav-card{display:block;text-decoration:none;background:linear-gradient(135deg,var(--ash),var(--parchment));border:1px solid rgba(139,0,0,.4);border-radius:14px;padding:18px 20px;margin-bottom:14px;transition:all .25s;position:relative;overflow:hidden;}
+.nav-card{display:block;text-decoration:none;background:linear-gradient(135deg,var(--ash),var(--parchment));border:1px solid rgba(139,0,0,.4);border-radius:14px;padding:18px 20px;margin-bottom:14px;transition:all .25s;position:relative;overflow:hidden;cursor:pointer;}
 .nav-card:active{transform:scale(.97);box-shadow:0 0 20px rgba(139,0,0,.4);}
 .nav-card-icon{font-size:2rem;margin-bottom:10px;display:block;}
 .nav-card-title{font-family:'Cinzel',serif;font-size:.88rem;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:6px;}
@@ -59,11 +104,11 @@ body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;posit
 .badge-pro{background:rgba(201,168,76,.2);color:var(--gold2);border:1px solid rgba(201,168,76,.35);}
 .badge-v1{background:rgba(139,0,0,.5);color:#ff8888;border:1px solid rgba(200,0,0,.4);}
 
+/* ── STATUS / STREAK ── */
 .update-banner{background:linear-gradient(135deg,#0d0500,#1a0500);border:1px solid var(--blood);border-radius:8px;padding:9px 12px;margin-bottom:12px;display:flex;align-items:center;gap:10px;animation:pulse-border 2.5s infinite;}
 @keyframes pulse-border{0%,100%{border-color:rgba(139,0,0,.4)}50%{border-color:rgba(200,0,0,.9)}}
 .update-dot{width:8px;height:8px;border-radius:50%;background:var(--ember);flex-shrink:0;animation:blink 1s infinite;}
 .update-text{font-family:'Cinzel',serif;font-size:.58rem;letter-spacing:1px;color:var(--gold);flex:1;}
-
 .status-bar{background:linear-gradient(135deg,var(--ash),var(--parchment));border:1px solid rgba(139,0,0,.3);border-radius:10px;padding:11px 13px;margin-bottom:12px;display:flex;align-items:center;gap:10px;}
 .tier-badge{font-family:'Cinzel',serif;font-size:.62rem;font-weight:700;letter-spacing:2px;padding:4px 9px;border-radius:5px;text-transform:uppercase;white-space:nowrap;}
 .tier-free{background:rgba(100,100,100,.3);color:#aaa;border:1px solid #555;}
@@ -76,14 +121,12 @@ body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;posit
 .status-name{font-family:'Cinzel',serif;font-size:.62rem;color:var(--gold);}
 .status-perks{font-size:.7rem;font-style:italic;color:rgba(212,184,150,.5);margin-top:2px;}
 .btn-upgrade{background:linear-gradient(135deg,#8b0000,#c0392b);border:none;border-radius:6px;padding:7px 11px;color:#fff;font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer;white-space:nowrap;}
-
 .streak-row{display:flex;gap:10px;margin-bottom:12px;}
 .streak-card,.xp-card{flex:1;background:linear-gradient(135deg,var(--parchment),var(--ash));border:1px solid rgba(139,0,0,.3);border-radius:8px;padding:10px;text-align:center;}
 .streak-num{font-family:'UnifrakturMaguntia',cursive;font-size:2rem;color:var(--ember);line-height:1;}
 .streak-label{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:2px;color:rgba(212,184,150,.45);text-transform:uppercase;}
 .xp-bar-wrap{margin-top:5px;height:4px;background:rgba(139,0,0,.2);border-radius:2px;overflow:hidden;}
 .xp-bar-fill{height:100%;background:linear-gradient(to right,var(--blood),var(--ember));border-radius:2px;transition:width .5s;}
-
 .days-row{display:flex;justify-content:center;gap:7px;margin-bottom:12px;}
 .day-pill{display:flex;flex-direction:column;align-items:center;gap:3px;}
 .day-circle{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .3s;}
@@ -92,18 +135,13 @@ body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;posit
 .day-circle.future{background:rgba(255,255,255,.05);border:2px solid rgba(255,255,255,.1);}
 .day-name{font-family:'Cinzel',serif;font-size:.45rem;letter-spacing:1px;color:rgba(212,184,150,.4);text-transform:uppercase;}
 
+/* ── OWL BUBBLE ── */
 .owl-section{position:relative;margin-bottom:12px;}
-.owl-bubble{background:linear-gradient(135deg,#0d0500,#1a0a00);border:1px solid rgba(139,0,0,.5);border-radius:12px;padding:11px 13px 11px 75px;min-height:60px;display:flex;align-items:center;}
+.owl-bubble{background:linear-gradient(135deg,#0d0500,#1a0a00);border:1px solid rgba(139,0,0,.5);border-radius:12px;padding:11px 13px 11px 78px;min-height:60px;display:flex;align-items:center;}
 .owl-text{font-style:italic;font-size:.84rem;line-height:1.5;color:rgba(212,184,150,.9);}
-.owl-mini-wrap{position:absolute;left:6px;bottom:-3px;width:62px;height:80px;cursor:pointer;}
-.owl-mini-svg{width:100%;height:100%;filter:drop-shadow(0 0 8px rgba(200,0,0,.4));}
-@keyframes owl-idle2{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
-@keyframes owl-angry{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)scale(1.05)}75%{transform:rotate(8deg)scale(1.05)}}
-@keyframes owl-happy{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
-.owl-mini-svg.idle{animation:owl-idle2 2.5s ease-in-out infinite;}
-.owl-mini-svg.angry{animation:owl-angry .4s ease-in-out infinite;}
-.owl-mini-svg.happy{animation:owl-happy .5s ease-in-out infinite;}
+.owl-mini-wrap{position:absolute;left:4px;bottom:-3px;width:68px;height:86px;cursor:pointer;}
 
+/* ── SINS ── */
 .sins-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px;}
 .sin-card{background:linear-gradient(135deg,var(--ash),var(--parchment));border:1px solid rgba(139,0,0,.4);border-radius:8px;padding:11px 9px;text-align:center;transition:all .2s;position:relative;overflow:hidden;}
 .sin-card.flash{border-color:var(--ember);transform:scale(.96);box-shadow:0 0 16px rgba(200,0,0,.5);background:linear-gradient(135deg,#3d0000,#1a0a00);}
@@ -115,12 +153,37 @@ body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;posit
 .btn-plus{background:rgba(139,0,0,.4);color:#ff8080;}
 .btn-minus:active,.btn-plus:active{transform:scale(.8);}
 
+/* ── REDEEM BUTTON ── */
+.btn-redeem{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;padding:14px;margin-bottom:14px;
+  background:linear-gradient(135deg,#3a0000,#700000,#3a0000);
+  border:1px solid var(--ember);border-radius:10px;
+  color:var(--gold2);font-family:'Cinzel',serif;font-size:.72rem;
+  letter-spacing:2px;text-transform:uppercase;cursor:pointer;
+  animation:redeem-pulse 2s ease-in-out infinite;
+  position:relative;overflow:hidden;
+}
+.btn-redeem::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,100,0,.15),transparent);
+  transform:translateX(-100%);
+  animation:redeem-shine 2s ease-in-out infinite;
+}
+@keyframes redeem-pulse{0%,100%{box-shadow:0 0 10px rgba(200,0,0,.3)}50%{box-shadow:0 0 25px rgba(200,0,0,.7),0 0 50px rgba(255,50,0,.2)}}
+@keyframes redeem-shine{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
+.btn-redeem:active{transform:scale(.97);}
+.redeem-icon{font-size:1.2rem;animation:float2 1.5s ease-in-out infinite;}
+@keyframes float2{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+
+/* ── TOTAL ── */
 .total-block{background:linear-gradient(135deg,#1a0000,var(--ash));border:1px solid var(--blood);border-radius:10px;padding:14px;text-align:center;margin-bottom:14px;}
 .total-label{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:4px;color:rgba(212,184,150,.35);text-transform:uppercase;}
 .total-number{font-family:'UnifrakturMaguntia',cursive;font-size:3.8rem;color:var(--ember);text-shadow:0 0 20px rgba(200,0,0,.7);line-height:1;transition:all .3s;}
 .total-number.bump{transform:scale(1.2);color:#ff2200;}
 .total-text{font-style:italic;font-size:.8rem;color:rgba(212,184,150,.5);margin-top:3px;}
 
+/* ── CHART ── */
 .hell-meter{position:relative;width:160px;height:160px;margin:0 auto 12px;}
 .hell-meter svg{transform:rotate(-90deg);}
 .hell-meter-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
@@ -131,6 +194,7 @@ body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;posit
 .bar{width:100%;max-width:26px;border-radius:3px 3px 0 0;background:linear-gradient(to top,var(--blood),var(--ember));min-height:2px;transition:height .5s cubic-bezier(.34,1.56,.64,1);}
 .bar-label{font-size:.55rem;color:rgba(212,184,150,.35);margin-top:3px;text-align:center;}
 
+/* ── QUESTS ── */
 .quest-item{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid rgba(100,150,0,.1);}
 .quest-item:last-child{border-bottom:none;}
 .quest-icon{font-size:1.2rem;flex-shrink:0;}
@@ -141,6 +205,7 @@ body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;posit
 .quest-prog-fill{height:100%;background:linear-gradient(to right,#2d6a00,#8fbc4f);border-radius:2px;transition:width .5s;}
 .quest-reward{font-family:'Cinzel',serif;font-size:.52rem;color:var(--gold2);white-space:nowrap;}
 
+/* ── LEADERBOARD ── */
 .lb-item{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid rgba(100,50,200,.1);}
 .lb-item:last-child{border-bottom:none;}
 .lb-rank{font-family:'UnifrakturMaguntia',cursive;font-size:1.3rem;color:rgba(212,184,150,.35);width:22px;text-align:center;flex-shrink:0;}
@@ -151,24 +216,22 @@ body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;posit
 .lb-stat{font-size:.68rem;font-style:italic;color:rgba(212,184,150,.35);}
 .lb-you{background:rgba(139,0,0,.35);color:var(--ember);border:1px solid var(--blood);font-family:'Cinzel',serif;font-size:.45rem;padding:1px 5px;border-radius:3px;}
 
+/* ── PRAYER SCREEN ── */
 .prayer-tab-row{display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap;}
 .prayer-tab{flex:1;min-width:80px;padding:7px;background:rgba(0,0,0,.3);border:1px solid rgba(139,0,0,.3);border-radius:7px;color:rgba(212,184,150,.45);font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer;text-align:center;transition:all .2s;}
 .prayer-tab.active{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,.1);}
 .prayer-title-line{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;}
-
 .prayer-text-block{font-style:italic;font-size:.98rem;line-height:1.75;color:rgba(212,184,150,.85);margin-bottom:14px;letter-spacing:.3px;}
 .word{display:inline;border-radius:3px;padding:0 2px;transition:all .3s;}
 .word.pending{color:rgba(212,184,150,.45);}
 .word.current{background:rgba(201,168,76,.25);color:var(--gold2);font-weight:600;}
 .word.correct{color:var(--green2);}
 .word.wrong{color:#ff5555;text-decoration:underline wavy #ff5555;}
-
 .prog-row{margin-bottom:12px;}
 .prog-label{display:flex;justify-content:space-between;font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:2px;color:rgba(212,184,150,.35);text-transform:uppercase;margin-bottom:5px;}
 .prog-bar{height:5px;background:rgba(139,0,0,.2);border-radius:3px;overflow:hidden;}
 .prog-fill{height:100%;width:0%;border-radius:3px;background:linear-gradient(to right,var(--blood),var(--ember));transition:width .4s;}
 .prog-fill.green{background:linear-gradient(to right,var(--green),var(--green2));}
-
 .score-row{display:flex;gap:9px;margin-bottom:12px;}
 .score-box{flex:1;background:rgba(0,0,0,.3);border:1px solid rgba(139,0,0,.2);border-radius:8px;padding:9px;text-align:center;}
 .score-num{font-family:'UnifrakturMaguntia',cursive;font-size:1.7rem;line-height:1;}
@@ -176,10 +239,36 @@ body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;posit
 .score-num.w{color:#ff5555;}
 .score-num.p{color:var(--gold);}
 .score-lbl{font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:1px;color:rgba(212,184,150,.35);text-transform:uppercase;margin-top:2px;}
-
 .recognized-box{background:rgba(0,0,0,.4);border:1px solid rgba(201,168,76,.12);border-radius:8px;padding:10px 12px;margin-bottom:12px;font-style:italic;font-size:.8rem;color:rgba(212,184,150,.45);min-height:36px;line-height:1.5;}
 .recognized-box span{color:rgba(212,184,150,.75);}
 
+/* ── MIC WAVEFORM ── */
+.mic-waveform{
+  display:flex;align-items:center;justify-content:center;gap:3px;
+  height:40px;margin-bottom:12px;
+  background:rgba(0,0,0,.3);border:1px solid rgba(139,0,0,.2);
+  border-radius:8px;padding:6px 12px;
+  overflow:hidden;
+}
+.mic-bar{
+  width:4px;border-radius:2px;
+  background:linear-gradient(to top,var(--blood),var(--ember));
+  height:4px;min-height:4px;
+  transition:height .05s ease;
+  flex-shrink:0;
+}
+.mic-bar.active{box-shadow:0 0 4px rgba(255,100,0,.6);}
+.mic-label{font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:2px;color:rgba(212,184,150,.3);text-transform:uppercase;text-align:center;margin-bottom:6px;}
+
+/* ── SOUND RINGS ── */
+.rings-wrap{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:1;}
+.ring{position:absolute;border-radius:50%;border:2px solid rgba(255,100,0,.5);width:130px;height:130px;margin-left:-65px;margin-top:-65px;transform:scale(0);opacity:0;}
+.rings-wrap.active .ring{animation:ring-pulse 1.4s ease-out infinite;}
+.rings-wrap.active .ring:nth-child(2){animation-delay:.46s;}
+.rings-wrap.active .ring:nth-child(3){animation-delay:.92s;}
+@keyframes ring-pulse{0%{transform:scale(.4);opacity:.9}100%{transform:scale(2.4);opacity:0}}
+
+/* ── RESULT ── */
 .result-banner{display:none;border-radius:10px;padding:14px;text-align:center;margin-bottom:12px;}
 .result-banner.show{display:block;}
 .result-banner.pass{background:rgba(0,70,0,.3);border:1px solid rgba(80,200,80,.4);}
@@ -190,14 +279,15 @@ body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;posit
 .result-title.fail{color:#ff5555;}
 .result-detail{font-style:italic;font-size:.85rem;color:rgba(212,184,150,.65);line-height:1.5;}
 
+/* ── BUTTONS ── */
 .btn-listen{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:15px;border:none;border-radius:10px;background:linear-gradient(135deg,#8b0000,#c0392b);color:#fff;font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:3px;text-transform:uppercase;cursor:pointer;box-shadow:0 0 20px rgba(139,0,0,.3);transition:all .2s;}
 .btn-listen.on{background:linear-gradient(135deg,#003300,#006600);box-shadow:0 0 20px rgba(0,200,0,.3);animation:btn-pulse .8s ease-in-out infinite alternate;}
 @keyframes btn-pulse{from{box-shadow:0 0 15px rgba(0,200,0,.3)}to{box-shadow:0 0 35px rgba(0,200,0,.6)}}
 .btn-mic{font-size:1.1rem;}
 .btn-reset-small{display:block;width:100%;padding:9px;margin-top:9px;background:transparent;border:1px solid rgba(139,0,0,.25);border-radius:8px;color:rgba(212,184,150,.3);font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;}
 
+/* ── SHOP ── */
 .shop-tier{border:1px solid rgba(139,0,0,.3);border-radius:10px;padding:14px;margin-bottom:12px;cursor:pointer;transition:all .2s;}
-.shop-tier:hover{border-color:rgba(200,0,0,.6);}
 .shop-tier.s{border-color:rgba(168,184,200,.3);}
 .shop-tier.g{border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.04);}
 .shop-tier.pl{border-color:rgba(200,180,240,.4);background:rgba(200,180,240,.04);}
@@ -216,10 +306,11 @@ body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;posit
 .btn-buy:active{transform:scale(.97);}
 .fine-print{font-size:.45rem;color:rgba(212,184,150,.2);margin-top:6px;text-align:center;}
 
+/* ── INDULGENCE ── */
 #indScreen{position:fixed;inset:0;z-index:200;background:linear-gradient(135deg,#1a0000,#0a0000,#1a0800);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;opacity:0;pointer-events:none;transition:opacity .4s;}
 #indScreen.show{opacity:1;pointer-events:all;}
-.ind-cross{font-size:3.5rem;margin-bottom:14px;filter:drop-shadow(0 0 20px rgba(200,150,0,.8));animation:float 3s ease-in-out infinite;}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.ind-cross{font-size:3.5rem;margin-bottom:14px;filter:drop-shadow(0 0 20px rgba(200,150,0,.8));animation:float3 3s ease-in-out infinite;}
+@keyframes float3{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 .ind-title{font-family:'UnifrakturMaguntia',cursive;font-size:2rem;color:var(--gold);text-align:center;text-shadow:0 0 30px rgba(201,168,76,.5);margin-bottom:6px;}
 .ind-sub{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:3px;color:var(--blood);text-transform:uppercase;text-align:center;margin-bottom:18px;}
 .ind-offer{background:linear-gradient(135deg,#1a0a00,#2d1000);border:2px solid var(--gold);border-radius:14px;padding:18px;width:100%;max-width:340px;text-align:center;margin-bottom:14px;}
@@ -232,28 +323,12 @@ body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;posit
 .btn-ind-skip{background:none;border:none;color:rgba(212,184,150,.18);font-family:'Cinzel',serif;font-size:.46rem;letter-spacing:2px;cursor:pointer;padding:8px;text-transform:uppercase;}
 .ind-timer{font-family:'Cinzel',serif;font-size:.58rem;color:rgba(212,184,150,.35);margin-bottom:8px;}
 
-.owl-popup{position:fixed;bottom:-200px;left:50%;transform:translateX(-50%);width:90%;max-width:360px;background:linear-gradient(135deg,#0d0500,#1f0a00);border:2px solid var(--blood);border-radius:16px;padding:16px 16px 16px 82px;box-shadow:0 0 40px rgba(200,0,0,.4);z-index:150;transition:bottom .5s cubic-bezier(.34,1.3,.64,1);min-height:78px;display:flex;align-items:center;}
+/* ── POPUP ── */
+.owl-popup{position:fixed;bottom:-200px;left:50%;transform:translateX(-50%);width:90%;max-width:360px;background:linear-gradient(135deg,#0d0500,#1f0a00);border:2px solid var(--blood);border-radius:16px;padding:16px 16px 16px 86px;box-shadow:0 0 40px rgba(200,0,0,.4);z-index:150;transition:bottom .5s cubic-bezier(.34,1.3,.64,1);min-height:78px;display:flex;align-items:center;}
 .owl-popup.show{bottom:74px;}
-.popup-owl{position:absolute;left:8px;bottom:0;width:68px;height:85px;}
+.popup-owl{position:absolute;left:8px;bottom:0;width:72px;height:90px;}
 .popup-text{font-style:italic;font-size:.88rem;line-height:1.5;color:var(--bone);}
 .popup-close{position:absolute;top:8px;right:10px;background:none;border:none;color:rgba(212,184,150,.35);font-size:.9rem;cursor:pointer;}
-
-/* ИСПРАВЛЕНИЕ: ЗВУКОВЫЕ ВОЛНЫ И РАЗМЕР СОВЫ */
-.rings-wrap{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;opacity:0;transition:opacity .4s ease;}
-.ring{position:absolute;border-radius:50%;border:2px solid rgba(201,168,76,0.6);box-shadow:0 0 15px rgba(255,150,0,0.4),inset 0 0 10px rgba(255,150,0,0.1);width:100px;height:100px;margin-left:-50px;margin-top:-50px;transform:scale(0);}
-.rings-wrap.active .ring{animation:ring-pulse 1.6s ease-out infinite;}
-.rings-wrap.active .ring:nth-child(2){animation-delay:.53s;}
-.rings-wrap.active .ring:nth-child(3){animation-delay:1.06s;}
-@keyframes ring-pulse{
-  0%  {transform:scale(0.3);opacity:.9;box-shadow:0 0 15px rgba(255,150,0,0.6),inset 0 0 10px rgba(255,150,0,0.15);}
-  50% {transform:scale(2.2);opacity:.4;box-shadow:0 0 25px rgba(255,150,0,0.2),inset 0 0 15px rgba(255,150,0,0.1);}
-  100%{transform:scale(3);opacity:0;box-shadow:0 0 35px rgba(255,150,0,0),inset 0 0 20px rgba(255,150,0,0);}
-}
-
-/* ИСПРАВЛЕНИЕ: УМЕНЬШАЕМ СОВУ НА ЭКРАНЕ МОЛИТВЫ */
-#speechOwl{width:80px!important;height:100px!important;margin:0 auto;display:block;}
-#s-prayer div[style*="width:120px"]{width:90px!important;height:110px!important;}
-@media(max-width:400px){#speechOwl{width:65px!important;height:80px!important;}}
 </style>
 </head>
 <body>
@@ -261,26 +336,99 @@ body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;posit
 <div id="fireBg"></div>
 <div class="particles" id="particles"></div>
 
+<!-- FIRE TRANSITION -->
+<div id="fireTransition">
+  <div class="fire-wave"></div>
+  <div class="fire-wave2"></div>
+</div>
+
+<!-- ══ SCREEN: HOME ══════════════════════════════ -->
 <div class="screen active" id="s-home">
 <div class="screen-inner" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding-bottom:80px;">
   <div class="page-title" style="font-size:3.5rem;">СинТрекер</div>
   <div class="page-sub">Духовный учёт</div>
   <hr class="orn" style="width:100%;max-width:300px;">
+
   <div class="home-owl-wrap" onclick="petHomeOwl()">
     <div class="home-tooltip" id="homeTooltip">Я жду твоего выбора, грешник.</div>
-    <svg class="home-owl-svg idle" viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg">
-      <ellipse cx="50" cy="85" rx="32" ry="38" fill="#1a2800"/><ellipse cx="50" cy="88" rx="28" ry="34" fill="#0d1800"/><ellipse cx="20" cy="90" rx="14" ry="22" fill="#0f1f00" transform="rotate(-15,20,90)"/><ellipse cx="80" cy="90" rx="14" ry="22" fill="#0f1f00" transform="rotate(15,80,90)"/><ellipse cx="50" cy="95" rx="18" ry="22" fill="#2d4400"/><ellipse cx="50" cy="48" rx="26" ry="26" fill="#1a2800"/><polygon points="28,28 22,8 36,22" fill="#0d1800"/><polygon points="72,28 78,8 64,22" fill="#0d1800"/><circle cx="38" cy="48" r="11" fill="#ffeecc"/><circle cx="62" cy="48" r="11" fill="#ffeecc"/><circle cx="38" cy="48" r="7" fill="#cc0000"/><circle cx="62" cy="48" r="7" fill="#cc0000"/><circle cx="38" cy="48" r="4" fill="#000"/><circle cx="62" cy="48" r="4" fill="#000"/><circle cx="40" cy="46" r="1.5" fill="white"/><circle cx="64" cy="46" r="1.5" fill="white"/><polygon points="50,54 44,62 56,62" fill="#c9a84c"/><path d="M40,68 Q50,62 60,68" stroke="#0d1800" stroke-width="2" fill="none"/><line x1="40" y1="122" x2="30" y2="128" stroke="#c9a84c" stroke-width="3" stroke-linecap="round"/><line x1="60" y1="122" x2="70" y2="128" stroke="#c9a84c" stroke-width="3" stroke-linecap="round"/><path d="M46,88 L54,88 M50,84 L50,96" stroke="#8b0000" stroke-width="2.5" opacity=".7"/><circle cx="38" cy="48" r="11" fill="none" stroke="#ff0000" stroke-width="1" opacity=".4"/><circle cx="62" cy="48" r="11" fill="none" stroke="#ff0000" stroke-width="1" opacity=".4"/>
+    <svg class="demon-svg idle" viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;filter:drop-shadow(0 0 16px rgba(200,0,0,.7));">
+      <!-- DEMON OWL -->
+      <!-- Body -->
+      <ellipse cx="50" cy="88" rx="30" ry="35" fill="#0d0a00"/>
+      <ellipse cx="50" cy="90" rx="25" ry="30" fill="#080500"/>
+      <ellipse cx="50" cy="96" rx="16" ry="20" fill="#1a1200"/>
+      <!-- Wings -->
+      <path d="M20,75 Q5,60 8,45 Q12,70 22,80 Z" fill="#0a0800"/>
+      <path d="M80,75 Q95,60 92,45 Q88,70 78,80 Z" fill="#0a0800"/>
+      <!-- Head -->
+      <ellipse cx="50" cy="46" rx="26" ry="26" fill="#0d0a00"/>
+      <!-- HORNS — demon style -->
+      <path d="M28,26 Q18,4 24,2 Q26,8 32,18 Z" fill="#8b0000"/>
+      <path d="M72,26 Q82,4 76,2 Q74,8 68,18 Z" fill="#8b0000"/>
+      <!-- Horn glow -->
+      <path d="M28,26 Q18,4 24,2 Q26,8 32,18 Z" fill="none" stroke="#ff4400" stroke-width="1" opacity=".6" style="animation:horn-glow 2s infinite"/>
+      <path d="M72,26 Q82,4 76,2 Q74,8 68,18 Z" fill="none" stroke="#ff4400" stroke-width="1" opacity=".6" style="animation:horn-glow 2s infinite"/>
+      <!-- Ear tufts (smaller, behind horns) -->
+      <polygon points="32,28 26,14 36,22" fill="#1a0000"/>
+      <polygon points="68,28 74,14 64,22" fill="#1a0000"/>
+      <!-- Eye sockets — deep red glow -->
+      <ellipse cx="38" cy="46" r="13" fill="#220000" opacity=".95"/>
+      <ellipse cx="62" cy="46" r="13" fill="#220000" opacity=".95"/>
+      <!-- Eye outer glow rings -->
+      <ellipse cx="38" cy="46" r="12" fill="none" stroke="#ff0000" stroke-width="1.5" opacity=".4" style="animation:eye-glow 1.5s infinite"/>
+      <ellipse cx="62" cy="46" r="12" fill="none" stroke="#ff0000" stroke-width="1.5" opacity=".4" style="animation:eye-glow 1.5s .3s infinite"/>
+      <!-- Iris -->
+      <circle cx="38" cy="46" r="9" fill="#cc0000" id="homeIrisL"/>
+      <circle cx="62" cy="46" r="9" fill="#cc0000" id="homeIrisR"/>
+      <!-- Pupil — vertical slit like a demon -->
+      <ellipse cx="38" cy="46" rx="2.5" ry="5" fill="#000" id="homePupilL"/>
+      <ellipse cx="62" cy="46" rx="2.5" ry="5" fill="#000" id="homePupilR"/>
+      <!-- Eye glint -->
+      <ellipse cx="40" cy="43" rx="2" ry="1" fill="rgba(255,200,200,.6)"/>
+      <ellipse cx="64" cy="43" rx="2" ry="1" fill="rgba(255,200,200,.6)"/>
+      <!-- Beak — sharp -->
+      <polygon points="50,53 43,62 57,62" fill="#c9a84c"/>
+      <polygon points="50,53 43,62 50,58" fill="#a07830"/>
+      <!-- Frown -->
+      <path d="M40,68 Q50,63 60,68" stroke="#080500" stroke-width="2.5" fill="none" id="homeMouth"/>
+      <!-- Chest markings — pentagram-ish -->
+      <path d="M46,86 L54,86 M50,82 L50,94" stroke="#8b0000" stroke-width="2" opacity=".8"/>
+      <circle cx="50" cy="88" r="8" fill="none" stroke="#8b0000" stroke-width=".8" opacity=".4"/>
+      <!-- Talons -->
+      <line x1="40" y1="122" x2="28" y2="130" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="40" y1="122" x2="37" y2="130" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="40" y1="122" x2="44" y2="130" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="60" y1="122" x2="72" y2="130" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="60" y1="122" x2="63" y2="130" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="60" y1="122" x2="56" y2="130" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
     </svg>
   </div>
+
   <div style="width:100%;max-width:380px;">
-    <div class="nav-card" onclick="goTo('s-sins')"><span class="nav-card-badge badge-v1">Главная</span><span class="nav-card-icon">😈</span><div class="nav-card-title">Счётчик Грехов</div><div class="nav-card-desc">Считай грехи, смотри диаграмму пути к аду.</div></div>
-    <div class="nav-card" onclick="goTo('s-prayer')"><span class="nav-card-badge badge-mic">🎙 Микрофон</span><span class="nav-card-icon">🦉</span><div class="nav-card-title">Сова Слушает</div><div class="nav-card-desc">Читай молитву вслух — сова проверит.</div></div>
-    <div class="nav-card" onclick="goTo('s-shop')" style="margin-bottom:0;"><span class="nav-card-badge badge-pro">Pro</span><span class="nav-card-icon">💰</span><div class="nav-card-title">Магазин Благодати</div><div class="nav-card-desc">Донаты, индульгенции, VIP.</div></div>
+    <div class="nav-card" onclick="goTo('s-sins')">
+      <span class="nav-card-badge badge-v1">Главная</span>
+      <span class="nav-card-icon">😈</span>
+      <div class="nav-card-title">Счётчик Грехов</div>
+      <div class="nav-card-desc">Считай грехи, диаграмма пути к аду, рейтинг духовности.</div>
+    </div>
+    <div class="nav-card" onclick="goTo('s-prayer')">
+      <span class="nav-card-badge badge-mic">🎙 Микрофон</span>
+      <span class="nav-card-icon">🦉</span>
+      <div class="nav-card-title">Сова Слушает</div>
+      <div class="nav-card-desc">Читай молитву вслух — сова проверяет каждое слово.</div>
+    </div>
+    <div class="nav-card" onclick="goTo('s-shop')" style="margin-bottom:0;">
+      <span class="nav-card-badge badge-pro">Pro</span>
+      <span class="nav-card-icon">💰</span>
+      <div class="nav-card-title">Магазин Благодати</div>
+      <div class="nav-card-desc">Донаты, индульгенции, VIP-благодать ×3.</div>
+    </div>
   </div>
-  <div style="margin-top:28px;font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:3px;color:rgba(212,184,150,.18);text-transform:uppercase;">Сова наблюдает • 2026</div>
+  <div style="margin-top:24px;font-family:'Cinzel',serif;font-size:.5rem;letter-spacing:3px;color:rgba(212,184,150,.15);text-transform:uppercase;">Сова наблюдает • 2026</div>
 </div>
 </div>
 
+<!-- ══ SCREEN: SINS ═══════════════════════════════ -->
 <div class="screen" id="s-sins">
 <div class="screen-inner">
   <div class="page-title">Грехи</div>
@@ -288,7 +436,10 @@ body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;posit
   <div class="update-banner"><div class="update-dot"></div><div><div class="update-text">🔥 Новые функции разблокированы!</div></div></div>
   <div class="status-bar">
     <div class="tier-badge tier-free" id="tierBadge">FREE</div>
-    <div class="status-info"><div class="status-name" id="statusName">Обычный грешник</div><div class="status-perks" id="statusPerks">Базовые молитвы • Ограничен</div></div>
+    <div class="status-info">
+      <div class="status-name" id="statusName">Обычный грешник</div>
+      <div class="status-perks" id="statusPerks">Базовые молитвы • Ограничен</div>
+    </div>
     <button class="btn-upgrade" onclick="goTo('s-shop')">УЛУЧШИТЬ ✦</button>
   </div>
   <div class="streak-row">
@@ -296,27 +447,69 @@ body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;posit
     <div class="xp-card"><div class="streak-label">Духовный опыт</div><div class="streak-num" id="xpNum" style="font-size:1.4rem;margin-top:4px;">0 XP</div><div class="xp-bar-wrap"><div class="xp-bar-fill" id="xpBar" style="width:0%"></div></div></div>
   </div>
   <div class="days-row" id="daysRow"></div>
+
+  <!-- OWL BUBBLE -->
   <div class="owl-section">
-    <div class="owl-bubble"><div class="owl-text" id="owlText">Здравствуй, грешник. Сова следит.</div></div>
+    <div class="owl-bubble">
+      <div class="owl-text" id="owlText">Здравствуй, грешник. Сова следит.</div>
+    </div>
     <div class="owl-mini-wrap" onclick="owlClicked()">
-      <svg class="owl-mini-svg idle" id="owlSvg" viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="85" rx="32" ry="38" fill="#1a2800"/><ellipse cx="50" cy="88" rx="28" ry="34" fill="#0d1800"/><ellipse cx="20" cy="90" rx="14" ry="22" fill="#0f1f00" transform="rotate(-15,20,90)"/><ellipse cx="80" cy="90" rx="14" ry="22" fill="#0f1f00" transform="rotate(15,80,90)"/><ellipse cx="50" cy="95" rx="18" ry="22" fill="#2d4400"/><ellipse cx="50" cy="48" rx="26" ry="26" fill="#1a2800"/><polygon points="28,28 22,8 36,22" fill="#0d1800"/><polygon points="72,28 78,8 64,22" fill="#0d1800"/><circle cx="38" cy="48" r="11" fill="#ffeecc"/><circle cx="62" cy="48" r="11" fill="#ffeecc"/><circle cx="38" cy="48" r="7" fill="#cc0000" id="owlIrisL"/><circle cx="62" cy="48" r="7" fill="#cc0000" id="owlIrisR"/><circle cx="38" cy="48" r="4" fill="#000"/><circle cx="62" cy="48" r="4" fill="#000"/><circle cx="40" cy="46" r="1.5" fill="white"/><circle cx="64" cy="46" r="1.5" fill="white"/><polygon points="50,54 44,62 56,62" fill="#c9a84c"/><path d="M40,68 Q50,62 60,68" stroke="#0d1800" stroke-width="2.5" fill="none" id="owlMouth"/><line x1="40" y1="122" x2="30" y2="128" stroke="#c9a84c" stroke-width="3" stroke-linecap="round"/><line x1="60" y1="122" x2="70" y2="128" stroke="#c9a84c" stroke-width="3" stroke-linecap="round"/><path d="M46,88 L54,88 M50,84 L50,96" stroke="#8b0000" stroke-width="2.5" opacity=".7"/><circle cx="38" cy="48" r="11" fill="none" stroke="#ff0000" stroke-width="1" opacity=".4"/><circle cx="62" cy="48" r="11" fill="none" stroke="#ff0000" stroke-width="1" opacity=".4"/></svg>
+      <svg class="demon-svg idle" id="owlSvg" viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;filter:drop-shadow(0 0 8px rgba(200,0,0,.5));">
+        <ellipse cx="50" cy="88" rx="30" ry="35" fill="#0d0a00"/>
+        <ellipse cx="50" cy="90" rx="25" ry="30" fill="#080500"/>
+        <ellipse cx="50" cy="96" rx="16" ry="20" fill="#1a1200"/>
+        <path d="M20,75 Q5,60 8,45 Q12,70 22,80 Z" fill="#0a0800"/>
+        <path d="M80,75 Q95,60 92,45 Q88,70 78,80 Z" fill="#0a0800"/>
+        <ellipse cx="50" cy="46" rx="26" ry="26" fill="#0d0a00"/>
+        <path d="M28,26 Q18,4 24,2 Q26,8 32,18 Z" fill="#8b0000"/>
+        <path d="M72,26 Q82,4 76,2 Q74,8 68,18 Z" fill="#8b0000"/>
+        <ellipse cx="38" cy="46" r="13" fill="#220000" opacity=".95"/>
+        <ellipse cx="62" cy="46" r="13" fill="#220000" opacity=".95"/>
+        <circle cx="38" cy="46" r="9" fill="#cc0000" id="owlIrisL"/>
+        <circle cx="62" cy="46" r="9" fill="#cc0000" id="owlIrisR"/>
+        <ellipse cx="38" cy="46" rx="2.5" ry="5" fill="#000"/>
+        <ellipse cx="62" cy="46" rx="2.5" ry="5" fill="#000"/>
+        <ellipse cx="40" cy="43" rx="1.5" ry=".8" fill="rgba(255,200,200,.5)"/>
+        <ellipse cx="64" cy="43" rx="1.5" ry=".8" fill="rgba(255,200,200,.5)"/>
+        <polygon points="50,53 43,62 57,62" fill="#c9a84c"/>
+        <path d="M40,68 Q50,63 60,68" stroke="#080500" stroke-width="2.5" fill="none" id="owlMouth"/>
+        <path d="M46,86 L54,86 M50,82 L50,94" stroke="#8b0000" stroke-width="2" opacity=".8"/>
+        <line x1="40" y1="122" x2="30" y2="128" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="60" y1="122" x2="70" y2="128" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
     </div>
   </div>
+
+  <!-- SINS GRID -->
   <div class="sins-grid" id="sinsGrid"></div>
+
+  <!-- REDEEM BUTTON -->
+  <button class="btn-redeem" onclick="redeemNow()">
+    <span class="redeem-icon">🕊️</span>
+    <span>Немедленно Искупить</span>
+    <span class="redeem-icon" style="transform:scaleX(-1);">🕊️</span>
+  </button>
+
   <div class="total-block">
     <div class="total-label">Всего грехов сегодня</div>
     <div class="total-number" id="totalCount">0</div>
     <div class="total-text" id="totalText">Начни с чистого листа...</div>
   </div>
   <hr class="orn">
+
   <div class="card-block">
     <div class="section-title">☩ Путь к Аду ☩</div>
     <div class="hell-meter">
-      <svg width="160" height="160" viewBox="0 0 160 160"><circle cx="80" cy="80" r="60" fill="none" stroke="rgba(139,0,0,.2)" stroke-width="12"/><circle cx="80" cy="80" r="60" fill="none" stroke="url(#fg)" stroke-width="12" stroke-linecap="round" stroke-dasharray="376.9" stroke-dashoffset="376.9" id="hellArc" style="transition:stroke-dashoffset .8s cubic-bezier(.34,1.1,.64,1)"/><defs><linearGradient id="fg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#8b0000"/><stop offset="100%" stop-color="#ff4500"/></linearGradient></defs></svg>
+      <svg width="160" height="160" viewBox="0 0 160 160">
+        <circle cx="80" cy="80" r="60" fill="none" stroke="rgba(139,0,0,.2)" stroke-width="12"/>
+        <circle cx="80" cy="80" r="60" fill="none" stroke="url(#fg)" stroke-width="12" stroke-linecap="round" stroke-dasharray="376.9" stroke-dashoffset="376.9" id="hellArc" style="transition:stroke-dashoffset .8s cubic-bezier(.34,1.1,.64,1)"/>
+        <defs><linearGradient id="fg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#8b0000"/><stop offset="100%" stop-color="#ff4500"/></linearGradient></defs>
+      </svg>
       <div class="hell-meter-label"><span class="hell-pct" id="hellPct">0%</span><span class="hell-verdict" id="hellVerdict">Праведник</span></div>
     </div>
     <div class="bar-chart" id="barChart"></div>
   </div>
+
   <div class="card-block" style="background:linear-gradient(135deg,#050d00,#0a1a00);border-color:rgba(100,150,0,.25);">
     <div class="section-title" style="color:#8fbc4f;">⚔ Задания Дня ⚔</div>
     <div id="questsList"></div>
@@ -329,152 +522,585 @@ body{background:#080300;color:var(--bone);font-family:'Crimson Text',serif;posit
 </div>
 </div>
 
+<!-- ══ SCREEN: PRAYER ══════════════════════════════ -->
 <div class="screen" id="s-prayer">
 <div class="screen-inner">
   <div class="page-title">Сова Слушает</div>
   <div class="page-sub">Читай вслух — сова проверит</div>
   <hr class="orn">
-  <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:18px;">
-    <div style="position:relative;width:90px;height:110px;">
-      <div class="rings-wrap" id="speechRings"><div class="ring"></div><div class="ring"></div><div class="ring"></div></div>
-      <svg class="owl-mini-svg idle" id="speechOwl" viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="85" rx="32" ry="38" fill="#1a2800"/><ellipse cx="50" cy="88" rx="28" ry="34" fill="#0d1800"/><ellipse cx="20" cy="90" rx="14" ry="22" fill="#0f1f00" transform="rotate(-15,20,90)"/><ellipse cx="80" cy="90" rx="14" ry="22" fill="#0f1f00" transform="rotate(15,80,90)"/><ellipse cx="50" cy="95" rx="18" ry="22" fill="#2d4400"/><ellipse cx="50" cy="48" rx="26" ry="26" fill="#1a2800"/><polygon points="28,28 22,8 36,22" fill="#0d1800"/><polygon points="72,28 78,8 64,22" fill="#0d1800"/><circle cx="38" cy="48" r="11" fill="#ffeecc"/><circle cx="62" cy="48" r="11" fill="#ffeecc"/><circle cx="38" cy="48" r="7" fill="#cc0000" id="spIrisL"/><circle cx="62" cy="48" r="7" fill="#cc0000" id="spIrisR"/><circle cx="38" cy="48" r="4" fill="#000"/><circle cx="62" cy="48" r="4" fill="#000"/><circle cx="40" cy="46" r="1.5" fill="white"/><circle cx="64" cy="46" r="1.5" fill="white"/><polygon points="50,54 44,62 56,62" fill="#c9a84c"/><path d="M40,68 Q50,62 60,68" stroke="#0d1800" stroke-width="2.5" fill="none" id="spMouth"/><line x1="40" y1="122" x2="30" y2="128" stroke="#c9a84c" stroke-width="3" stroke-linecap="round"/><line x1="60" y1="122" x2="70" y2="128" stroke="#c9a84c" stroke-width="3" stroke-linecap="round"/><path d="M46,88 L54,88 M50,84 L50,96" stroke="#8b0000" stroke-width="2.5" opacity=".7"/><circle cx="38" cy="48" r="11" fill="none" stroke="#ff0000" stroke-width="1" opacity=".4"/><circle cx="62" cy="48" r="11" fill="none" stroke="#ff0000" stroke-width="1" opacity=".4"/></svg>
+
+  <!-- Owl + rings -->
+  <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin-bottom:16px;">
+    <div style="position:relative;width:130px;height:160px;">
+      <div class="rings-wrap" id="speechRings">
+        <div class="ring"></div><div class="ring"></div><div class="ring"></div>
+      </div>
+      <svg class="demon-svg idle" id="speechOwl" viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg" style="width:130px;height:160px;filter:drop-shadow(0 0 12px rgba(200,0,0,.6));">
+        <ellipse cx="50" cy="88" rx="30" ry="35" fill="#0d0a00"/>
+        <ellipse cx="50" cy="90" rx="25" ry="30" fill="#080500"/>
+        <ellipse cx="50" cy="96" rx="16" ry="20" fill="#1a1200"/>
+        <path d="M20,75 Q5,60 8,45 Q12,70 22,80 Z" fill="#0a0800"/>
+        <path d="M80,75 Q95,60 92,45 Q88,70 78,80 Z" fill="#0a0800"/>
+        <ellipse cx="50" cy="46" rx="26" ry="26" fill="#0d0a00"/>
+        <path d="M28,26 Q18,4 24,2 Q26,8 32,18 Z" fill="#8b0000"/>
+        <path d="M72,26 Q82,4 76,2 Q74,8 68,18 Z" fill="#8b0000"/>
+        <ellipse cx="38" cy="46" r="13" fill="#220000" opacity=".95"/>
+        <ellipse cx="62" cy="46" r="13" fill="#220000" opacity=".95"/>
+        <ellipse cx="38" cy="46" r="12" fill="none" stroke="#ff0000" stroke-width="1.5" opacity=".5"/>
+        <ellipse cx="62" cy="46" r="12" fill="none" stroke="#ff0000" stroke-width="1.5" opacity=".5"/>
+        <circle cx="38" cy="46" r="9" fill="#cc0000" id="spIrisL"/>
+        <circle cx="62" cy="46" r="9" fill="#cc0000" id="spIrisR"/>
+        <ellipse cx="38" cy="46" rx="2.5" ry="5" fill="#000" id="spPupilL"/>
+        <ellipse cx="62" cy="46" rx="2.5" ry="5" fill="#000" id="spPupilR"/>
+        <ellipse cx="40" cy="43" rx="2" ry="1" fill="rgba(255,200,200,.6)"/>
+        <ellipse cx="64" cy="43" rx="2" ry="1" fill="rgba(255,200,200,.6)"/>
+        <polygon points="50,53 43,62 57,62" fill="#c9a84c"/>
+        <path d="M40,68 Q50,63 60,68" stroke="#080500" stroke-width="2.5" fill="none" id="spMouth"/>
+        <path d="M46,86 L54,86 M50,82 L50,94" stroke="#8b0000" stroke-width="2" opacity=".8"/>
+        <circle cx="50" cy="88" r="8" fill="none" stroke="#8b0000" stroke-width=".8" opacity=".4"/>
+        <line x1="40" y1="122" x2="28" y2="130" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="40" y1="122" x2="37" y2="130" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="40" y1="122" x2="44" y2="130" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="60" y1="122" x2="72" y2="130" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="60" y1="122" x2="63" y2="130" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="60" y1="122" x2="56" y2="130" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
     </div>
-    <div class="owl-bubble" style="max-width:340px;padding:11px 14px;"><div class="owl-text" id="speechBubble">Выбери молитву и нажми кнопку.</div></div>
+    <div class="owl-bubble" style="max-width:340px;padding:11px 14px;">
+      <div class="owl-text" id="speechBubble">Выбери молитву и нажми кнопку.</div>
+    </div>
   </div>
+
   <div class="card-block">
     <div class="prayer-tab-row" id="prayerTabs"></div>
     <div class="prayer-title-line" id="prayerTitle">Молитва Иисусова</div>
     <div class="prayer-text-block" id="prayerWords"></div>
-    <div class="prog-row"><div class="prog-label"><span>Прогресс</span><span id="progText">0 / 0 слов</span></div><div class="prog-bar"><div class="prog-fill" id="progFill"></div></div></div>
+
+    <div class="prog-row">
+      <div class="prog-label"><span>Прогресс</span><span id="progText">0 / 0 слов</span></div>
+      <div class="prog-bar"><div class="prog-fill" id="progFill"></div></div>
+    </div>
     <div class="score-row">
       <div class="score-box"><div class="score-num c" id="scCorrect">0</div><div class="score-lbl">Верно</div></div>
       <div class="score-box"><div class="score-num w" id="scWrong">0</div><div class="score-lbl">Ошибок</div></div>
       <div class="score-box"><div class="score-num p" id="scPct">—</div><div class="score-lbl">Точность</div></div>
     </div>
+
+    <!-- WAVEFORM -->
+    <div class="mic-label" id="micLabel">Микрофон не активен</div>
+    <div class="mic-waveform" id="micWaveform">
+      <!-- bars inserted by JS -->
+    </div>
+
     <div class="recognized-box" id="recognizedBox">Сова ещё ничего не слышала...</div>
-    <div class="result-banner" id="resultBanner"><span class="result-icon" id="resultIcon"></span><div class="result-title" id="resultTitle"></div><div class="result-detail" id="resultDetail"></div></div>
-    <button class="btn-listen" id="btnListen" onclick="toggleListening()"><span class="btn-mic">🎙️</span><span id="btnText">Начать чтение</span></button>
+    <div class="result-banner" id="resultBanner">
+      <span class="result-icon" id="resultIcon"></span>
+      <div class="result-title" id="resultTitle"></div>
+      <div class="result-detail" id="resultDetail"></div>
+    </div>
+    <button class="btn-listen" id="btnListen" onclick="toggleListening()">
+      <span class="btn-mic">🎙️</span><span id="btnText">Начать чтение</span>
+    </button>
     <button class="btn-reset-small" onclick="resetPrayer()">↺ Начать заново</button>
   </div>
 </div>
 </div>
 
+<!-- ══ SCREEN: SHOP ════════════════════════════════ -->
 <div class="screen" id="s-shop">
 <div class="screen-inner">
   <div class="page-title">Благодать</div>
   <div class="page-sub">Инвестируй в спасение</div>
   <hr class="orn">
-  <div class="shop-tier s" onclick="purchase('silver')"><div class="tier-header"><span class="tier-name" style="color:var(--silver);">🥈 Серебряный</span><span class="tier-price">99 ₽/мес</span></div><ul class="tier-perks"><li>1 грех/день — прощается</li><li>Благодать ×1.1</li><li>3 молитвы</li></ul><button class="btn-buy buy-s">Получить Серебро</button></div>
-  <div class="shop-tier g" onclick="purchase('gold')"><div class="tier-header"><span class="tier-name" style="color:var(--gold2);">🥇 Золотой</span><span class="tier-price">299 ₽/мес</span></div><ul class="tier-perks"><li>3 греха/день прощаются</li><li>Благодать ×1.25</li><li>8 молитв</li></ul><button class="btn-buy buy-g">Получить Золото</button></div>
-  <div class="shop-tier pl" onclick="purchase('plat')"><div class="tier-header"><span class="tier-name" style="color:var(--plat);">💎 Платиновый</span><span class="tier-price">799 ₽/мес</span></div><ul class="tier-perks"><li>∞ грехи</li><li>Благодать ×1.5</li><li>Все молитвы</li></ul><button class="btn-buy buy-pl">Получить Платину</button></div>
-  <div class="shop-tier vp" onclick="purchase('vip')"><div class="tier-header"><span class="tier-name" style="color:var(--vip);">👑 VIP</span><span class="tier-price">2490 ₽/мес</span></div><ul class="tier-perks"><li>Все грехи прощаются</li><li>Благодать ×3</li><li>Ангел-куратор</li></ul><button class="btn-buy buy-vp">✨ Стать VIP ✨</button></div>
-  <button class="btn-reset-small" onclick="showIndulgence()">📜 Купить Индульгенцию</button>
+  <div class="shop-tier s" onclick="purchase('silver')">
+    <div class="tier-header"><span class="tier-name" style="color:var(--silver);">🥈 Серебряный</span><span class="tier-price">99 ₽/мес</span></div>
+    <ul class="tier-perks"><li>1 малый грех в день прощается автоматически</li><li>Благодать ×1.1</li><li>3 эксклюзивные молитвы</li></ul>
+    <button class="btn-buy buy-s">Получить Серебро</button>
+  </div>
+  <div class="shop-tier g" onclick="purchase('gold')">
+    <div class="tier-header"><span class="tier-name" style="color:var(--gold2);">🥇 Золотой</span><span class="tier-price">299 ₽/мес</span></div>
+    <ul class="tier-perks"><li>3 греха в день прощаются</li><li>Благодать ×1.25</li><li>8 молитв + редкие</li><li>Индульгенции −20%</li></ul>
+    <button class="btn-buy buy-g">Получить Золото</button>
+  </div>
+  <div class="shop-tier pl" onclick="purchase('plat')">
+    <div class="tier-header"><span class="tier-name" style="color:var(--plat);">💎 Платиновый</span><span class="tier-price">799 ₽/мес</span></div>
+    <ul class="tier-perks"><li>Неограниченные малые грехи</li><li>Благодать ×1.5</li><li>Все молитвы</li><li>Без рекламы*</li></ul>
+    <button class="btn-buy buy-pl">Получить Платину</button>
+    <div class="fine-print">* кроме «специальных предложений»</div>
+  </div>
+  <div class="shop-tier vp" onclick="purchase('vip')">
+    <div class="tier-header"><span class="tier-name" style="color:var(--vip);">👑 VIP Blessed</span><span class="tier-price">2490 ₽/мес</span></div>
+    <ul class="tier-perks"><li>Все грехи прощаются в конце дня</li><li>Благодать ×3</li><li>Ангел-куратор AI</li><li>VIP рейтинг — всегда топ-3</li><li>NFT-сертификат</li></ul>
+    <button class="btn-buy buy-vp">✨ Стать VIP ✨</button>
+    <div class="fine-print">** ответ в течение 7–14 дней</div>
+  </div>
+  <button class="btn-reset-small" onclick="showIndulgence()">📜 Купить Индульгенцию разово</button>
 </div>
 </div>
 
-<div id="indScreen"><div class="ind-cross">✝</div><div class="ind-title">Индульгенция</div><div class="ind-sub">Только сейчас</div><div class="ind-offer"><div class="ind-offer-name" id="indName">Малая Индульгенция</div><div class="ind-offer-desc" id="indDesc">Прощает до 5 грехов.</div><span class="ind-price" id="indPrice">49 ₽</span><div class="ind-price-sub" id="indSub">разовый платёж</div><button class="btn-ind-buy" onclick="buyIndulgence()">🙏 КУПИТЬ</button></div><div class="ind-timer">⏳ <span id="indCountdown">05:00</span></div><button class="btn-ind-skip" id="skipBtn" style="display:none" onclick="closeIndulgence()">продолжить грешить</button></div>
+<!-- INDULGENCE -->
+<div id="indScreen">
+  <div class="ind-cross">✝</div>
+  <div class="ind-title">Индульгенция</div>
+  <div class="ind-sub">Только сейчас</div>
+  <div class="ind-offer">
+    <div class="ind-offer-name" id="indName">Малая Индульгенция</div>
+    <div class="ind-offer-desc" id="indDesc">Прощает до 5 грехов немедленно.</div>
+    <span class="ind-price" id="indPrice">49 ₽</span>
+    <div class="ind-price-sub" id="indSub">разовый платёж • мгновенное прощение</div>
+    <button class="btn-ind-buy" onclick="buyIndulgence()">🙏 КУПИТЬ ПРОЩЕНИЕ</button>
+  </div>
+  <div class="ind-timer">⏳ Предложение истекает: <span id="indCountdown">08</span> сек</div>
+  <button class="btn-ind-skip" id="skipBtn" style="display:none" onclick="closeIndulgence()">продолжить грешить бесплатно</button>
+</div>
 
+<!-- BOTTOM NAV -->
 <nav class="bnav">
   <button class="bnav-btn active" id="nav-home" onclick="goTo('s-home')"><span class="bnav-icon">☩</span><span class="bnav-label">Главная</span></button>
   <button class="bnav-btn" id="nav-sins" onclick="goTo('s-sins')"><span class="bnav-icon">😈</span><span class="bnav-label">Грехи</span></button>
   <button class="bnav-btn" id="nav-prayer" onclick="goTo('s-prayer')"><span class="bnav-icon">🦉</span><span class="bnav-label">Молитва</span></button>
-  <button class="bnav-btn" id="nav-shop" onclick="goTo('s-shop')"><span class="bnav-icon">💰</span><span class="bnav-label">Магазин</span><span class="bnav-dot"></span></button>
+  <button class="bnav-btn" id="nav-shop" onclick="goTo('s-shop')" style="position:relative;"><span class="bnav-icon">💰</span><span class="bnav-label">Магазин</span><span class="bnav-dot"></span></button>
 </nav>
 
-<div class="owl-popup" id="owlPopup"><div class="popup-owl"><svg viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg"><ellipse cx="50" cy="85" rx="32" ry="38" fill="#1a2800"/><ellipse cx="50" cy="88" rx="28" ry="34" fill="#0d1800"/><ellipse cx="50" cy="95" rx="18" ry="22" fill="#2d4400"/><ellipse cx="50" cy="48" rx="26" ry="26" fill="#1a2800"/><polygon points="28,28 22,8 36,22" fill="#0d1800"/><polygon points="72,28 78,8 64,22" fill="#0d1800"/><circle cx="38" cy="48" r="11" fill="#ffeecc"/><circle cx="62" cy="48" r="11" fill="#ffeecc"/><circle cx="38" cy="48" r="7" fill="#cc0000"/><circle cx="62" cy="48" r="7" fill="#cc0000"/><circle cx="38" cy="48" r="4" fill="#000"/><circle cx="62" cy="48" r="4" fill="#000"/><circle cx="40" cy="46" r="1.5" fill="white"/><circle cx="64" cy="46" r="1.5" fill="white"/><polygon points="50,54 44,62 56,62" fill="#c9a84c"/><path d="M40,68 Q50,62 60,68" stroke="#0d1800" stroke-width="2" fill="none"/></svg></div><div class="popup-text" id="popupText"></div><button class="popup-close" onclick="closePopup()">✕</button></div>
+<!-- POPUP -->
+<div class="owl-popup" id="owlPopup">
+  <div class="popup-owl">
+    <svg viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="50" cy="88" rx="30" ry="35" fill="#0d0a00"/>
+      <ellipse cx="50" cy="96" rx="16" ry="20" fill="#1a1200"/>
+      <ellipse cx="50" cy="46" rx="26" ry="26" fill="#0d0a00"/>
+      <path d="M28,26 Q18,4 24,2 Q26,8 32,18 Z" fill="#8b0000"/>
+      <path d="M72,26 Q82,4 76,2 Q74,8 68,18 Z" fill="#8b0000"/>
+      <ellipse cx="38" cy="46" r="13" fill="#220000"/>
+      <ellipse cx="62" cy="46" r="13" fill="#220000"/>
+      <circle cx="38" cy="46" r="9" fill="#cc0000"/>
+      <circle cx="62" cy="46" r="9" fill="#cc0000"/>
+      <ellipse cx="38" cy="46" rx="2.5" ry="5" fill="#000"/>
+      <ellipse cx="62" cy="46" rx="2.5" ry="5" fill="#000"/>
+      <ellipse cx="40" cy="43" rx="1.5" ry=".8" fill="rgba(255,200,200,.5)"/>
+      <ellipse cx="64" cy="43" rx="1.5" ry=".8" fill="rgba(255,200,200,.5)"/>
+      <polygon points="50,53 43,62 57,62" fill="#c9a84c"/>
+      <path d="M40,68 Q50,63 60,68" stroke="#080500" stroke-width="2.5" fill="none"/>
+      <path d="M46,86 L54,86 M50,82 L50,94" stroke="#8b0000" stroke-width="2" opacity=".8"/>
+    </svg>
+  </div>
+  <div class="popup-text" id="popupText"></div>
+  <button class="popup-close" onclick="closePopup()">✕</button>
+</div>
 
 <script>
-let audioCtx=null;
-function initAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();}
-function playTone(freq,dur,type='sine',vol=0.1){if(!audioCtx)return;try{const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type;o.frequency.setValueAtTime(freq,audioCtx.currentTime);g.gain.setValueAtTime(vol,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+dur);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+dur);}catch(e){}}
-function playDoorSound(){initAudio();playTone(80,0.4,'triangle',0.1);setTimeout(()=>playTone(100,0.3,'triangle',0.05),100);}
-function playSinSound(){initAudio();playTone(120,0.4,'sawtooth',0.08);if(navigator.vibrate)navigator.vibrate(50);}
-function playForgiveSound(){initAudio();playTone(800,0.15);setTimeout(()=>playTone(1000,0.2),100);}
-function playPrayerDoneSound(){initAudio();playTone(600,0.15);setTimeout(()=>playTone(800,0.15),100);setTimeout(()=>playTone(1100,0.3),200);}
-function playAngrySound(){initAudio();playTone(60,0.3,'sawtooth',0.1);}
-function playBuySound(){initAudio();playTone(600,0.15);setTimeout(()=>playTone(900,0.2),100);}
+// ══════════════════════════════════════════
+//  NAVIGATION with FIRE TRANSITION
+// ══════════════════════════════════════════
+const screens=['s-home','s-sins','s-prayer','s-shop'];
+const navIds=['nav-home','nav-sins','nav-prayer','nav-shop'];
+let transitioning=false;
 
-const screens=['s-home','s-sins','s-prayer','s-shop'],navIds=['nav-home','nav-sins','nav-prayer','nav-shop'];
-function goTo(id){initAudio();if(id==='s-home')playDoorSound();screens.forEach(s=>document.getElementById(s).classList.toggle('active',s===id));navIds.forEach((n,i)=>document.getElementById(n).classList.toggle('active',screens[i]===id));const el=document.getElementById(id);if(el)el.scrollTop=0;}
+function goTo(id){
+  if(transitioning)return;
+  const cur=screens.find(s=>document.getElementById(s).classList.contains('active'));
+  if(cur===id)return;
+  transitioning=true;
 
-const SINS=[{id:'pride',icon:'👑',name:'Гордыня',weight:3},{id:'greed',icon:'💰',name:'Алчность',weight:2},{id:'lust',icon:'🔥',name:'Похоть',weight:3},{id:'envy',icon:'💚',name:'Зависть',weight:2},{id:'gluttony',icon:'🍖',name:'Чревоугодие',weight:1},{id:'wrath',icon:'⚡',name:'Гнев',weight:2},{id:'sloth',icon:'😴',name:'Уныние',weight:1},{id:'lie',icon:'🗣️',name:'Ложь',weight:2}];
-const TIERS={free:{label:'FREE',cls:'tier-free',name:'Обычный грешник',perks:'Базовые молитвы',bonus:1.0},silver:{label:'SILVER',cls:'tier-silver',name:'Серебряный',perks:'1 грех/день',bonus:1.1},gold:{label:'GOLD',cls:'tier-gold',name:'Золотой',perks:'3 греха/день',bonus:1.25},plat:{label:'PLATINUM',cls:'tier-plat',name:'Платиновый',perks:'∞ грехи',bonus:1.5},vip:{label:'VIP',cls:'tier-vip',name:'VIP ✦',perks:'Автопрощение',bonus:3.0}};
-const VERDICTS=[[0,0,'Праведник'],[1,10,'Слегка запятнан'],[11,20,'Грешник'],[21,35,'Заядлый'],[36,50,'Одержимый'],[51,70,'В ад'],[71,90,'Любимец дьявола'],[91,100,'Дьявол завидует']];
-const QUESTS=[{id:'q1',icon:'🙏',name:'Помолись 2 раза',target:2,key:'prayCount',reward:'50 XP'},{id:'q2',icon:'⚡',name:'5 грехов',target:5,key:'sinTotal',reward:'20 XP'},{id:'q3',icon:'📿',name:'3 молитвы',target:3,key:'prayCount',reward:'Индульгенция'}];
-const LB=[{rank:1,av:'😇',name:'Иван П.',score:9840},{rank:2,av:'🙏',name:'Мария С.',score:8120},{rank:3,av:'👼',name:'Николай',score:7350},{rank:4,av:'🕊️',name:'Анна',score:6800}];
-const IND_OFFERS=[{name:'Малая',desc:'5 грехов прощено',price:'49 ₽',sub:'разово'},{name:'Полная',desc:'Все грехи прощены',price:'149 ₽',sub:'−30%'}];
-const PRAYERS_DATA=[{id:'p1',name:'Иисусова',text:'Господи Иисусе Христе Сыне Божий помилуй мя грешного'},{id:'p2',name:'Отче наш',text:'Отче наш иже еси на небесех да святится имя Твое'},{id:'p3',name:'Богородице',text:'Богородице Дево радуйся Благодатная Марие'}];
+  const ft=document.getElementById('fireTransition');
+  ft.classList.add('ignite');
 
+  // At peak of fire (350ms) — switch screen
+  setTimeout(()=>{
+    screens.forEach(s=>document.getElementById(s).classList.toggle('active',s===id));
+    navIds.forEach((n,i)=>document.getElementById(n).classList.toggle('active',screens[i]===id));
+    document.getElementById(id).scrollTop=0;
+  },350);
+
+  // Done
+  setTimeout(()=>{ft.classList.remove('ignite');transitioning=false;},800);
+}
+
+// ══════════════════════════════════════════
+//  DATA
+// ══════════════════════════════════════════
+const SINS=[
+  {id:'pride',  icon:'👑',name:'Гордыня',   weight:3},
+  {id:'greed',  icon:'💰',name:'Алчность',  weight:2},
+  {id:'lust',   icon:'🔥',name:'Похоть',    weight:3},
+  {id:'envy',   icon:'💚',name:'Зависть',   weight:2},
+  {id:'gluttony',icon:'🍖',name:'Чревоугодие',weight:1},
+  {id:'wrath',  icon:'⚡',name:'Гнев',      weight:2},
+  {id:'sloth',  icon:'😴',name:'Уныние',    weight:1},
+  {id:'lie',    icon:'🗣️',name:'Ложь',      weight:2},
+];
+const TIERS={
+  free:  {label:'FREE',    cls:'tier-free',  name:'Обычный грешник',    perks:'Базовые молитвы',       bonus:1.0},
+  silver:{label:'SILVER',  cls:'tier-silver',name:'Серебряный послушник',perks:'1 грех/день • ×1.1',   bonus:1.1},
+  gold:  {label:'GOLD',    cls:'tier-gold',  name:'Золотой прихожанин', perks:'3 греха/день • ×1.25',  bonus:1.25},
+  plat:  {label:'PLATINUM',cls:'tier-plat',  name:'Платиновый праведник',perks:'∞ грехи • ×1.5',       bonus:1.5},
+  vip:   {label:'VIP',     cls:'tier-vip',   name:'VIP Blessed ✦',      perks:'Автопрощение • ×3',     bonus:3.0},
+};
+const VERDICTS=[[0,0,'Праведник'],[1,10,'Слегка запятнан'],[11,20,'Грешник'],[21,35,'Заядлый грешник'],[36,50,'Одержимый'],[51,70,'В ад'],[71,90,'Любимец дьявола'],[91,100,'Дьявол завидует']];
+const QUESTS=[
+  {id:'q1',icon:'🙏',name:'Помолись 2 раза',   target:2,key:'prayCount',reward:'50 XP'},
+  {id:'q2',icon:'⚡',name:'Исповедай 5 грехов', target:5,key:'sinTotal', reward:'20 XP'},
+  {id:'q3',icon:'📿',name:'Прочти молитву 3×',  target:3,key:'prayCount',reward:'Индульгенция'},
+];
+const LB=[
+  {rank:1,av:'😇',name:'Иван П.',   score:9840,badge:'GOLD'},
+  {rank:2,av:'🙏',name:'Мария С.',  score:8120,badge:'PLAT'},
+  {rank:3,av:'😈',name:'Ты',        score:0,   badge:'FREE',you:true},
+  {rank:4,av:'👼',name:'Николай В.',score:7350,badge:'SILVER'},
+  {rank:5,av:'🕊️',name:'Анна К.',   score:6800,badge:'GOLD'},
+];
+const IND_OFFERS=[
+  {name:'Малая Индульгенция',    desc:'Прощает до 5 грехов немедленно.',       price:'49 ₽', sub:'разовый'},
+  {name:'Полная Индульгенция',   desc:'Все сегодняшние грехи прощены.',         price:'149 ₽',sub:'−30% сейчас'},
+  {name:'Недельная Индульгенция',desc:'7 дней прощения без последствий.',       price:'399 ₽',sub:'выгоднее всего'},
+  {name:'Вечная Индульгенция™',  desc:'Прощение навсегда. NFT-сертификат.',     price:'9990 ₽',sub:'лимитировано'},
+];
+const PRAYERS_DATA=[
+  {id:'p1',name:'Иисусова',  text:'Господи Иисусе Христе Сыне Божий помилуй мя грешного'},
+  {id:'p2',name:'Отче наш',  text:'Отче наш иже еси на небесех да святится имя Твое да приидет Царствие Твое да будет воля Твоя яко на небеси и на земли хлеб наш насущный даждь нам днесь и остави нам долги наша якоже и мы оставляем должником нашим и не введи нас во искушение но избави нас от лукавого'},
+  {id:'p3',name:'Богородице',text:'Богородице Дево радуйся Благодатная Марие Господь с Тобою благословена Ты в женах и благословен плод чрева Твоего яко Спаса родила еси душ наших'},
+];
+
+// ══════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════
 const today=new Date().toDateString();
 let counts=JSON.parse(localStorage.getItem('sins_counts')||'{}');
 if(localStorage.getItem('sins_date')!==today){counts={};localStorage.setItem('sins_date',today);}
 SINS.forEach(s=>{if(!counts[s.id])counts[s.id]=0;});
-let tier=localStorage.getItem('user_tier')||'free',xp=parseInt(localStorage.getItem('user_xp')||'0'),streak=parseInt(localStorage.getItem('user_streak')||'1'),questProg=JSON.parse(localStorage.getItem('quest_prog')||'{}');
+let tier=localStorage.getItem('user_tier')||'free';
+let xp=parseInt(localStorage.getItem('user_xp')||'0');
+let streak=parseInt(localStorage.getItem('user_streak')||'1');
+let questProg=JSON.parse(localStorage.getItem('quest_prog')||'{}');
 QUESTS.forEach(q=>{if(!questProg[q.id])questProg[q.id]=0;});
 let indTimerInt=null,popupTmt=null;
-function save(){localStorage.setItem('sins_counts',JSON.stringify(counts));localStorage.setItem('quest_prog',JSON.stringify(questProg));localStorage.setItem('user_xp',xp);localStorage.setItem('user_tier',tier);}
+// prayer checker state
+let curPrayer=0,words=[],wordIdx=0,correct=0,wrong=0,listening=false,recognition=null,transcript='';
+// audio context for waveform
+let audioCtx=null,analyser=null,micStream=null,waveAnim=null;
 
+function save(){
+  localStorage.setItem('sins_counts',JSON.stringify(counts));
+  localStorage.setItem('user_tier',tier);
+  localStorage.setItem('user_xp',xp);
+  localStorage.setItem('quest_prog',JSON.stringify(questProg));
+}
+
+// ══════════════════════════════════════════
+//  HELPERS
+// ══════════════════════════════════════════
 function getTotal(){return SINS.reduce((s,sin)=>s+(counts[sin.id]||0),0);}
 function getWeighted(){return SINS.reduce((s,sin)=>s+(counts[sin.id]||0)*sin.weight,0);}
 function getHellPct(){return Math.min(100,Math.round(getWeighted()/0.6));}
 function getVerdict(p){for(const[lo,hi,v]of VERDICTS)if(p>=lo&&p<=hi)return v;return VERDICTS[VERDICTS.length-1][2];}
 function rand(a){return a[Math.floor(Math.random()*a.length)];}
-function norm(w){return w.toLowerCase().replace(/[^а-яёa-z]/g,'').replace(/ё/g,'е');}
-function editDist(a,b){const m=a.length,n=b.length,dp=Array.from({length:m+1},(_,i)=>Array.from({length:n+1},(_,j)=>i===0?j:j===0?i:0));for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);return dp[m][n];}
+function normW(w){return w.toLowerCase().replace(/[^а-яёa-z]/g,'').replace(/ё/g,'е');}
+function editDist(a,b){
+  const m=a.length,n=b.length,dp=Array.from({length:m+1},(_,i)=>Array.from({length:n+1},(_,j)=>i===0?j:j===0?i:0));
+  for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);
+  return dp[m][n];
+}
 
-function renderStatus(){const t=TIERS[tier],tb=document.getElementById('tierBadge');tb.className='tier-badge '+t.cls;tb.textContent=t.label;document.getElementById('statusName').textContent=t.name;document.getElementById('statusPerks').textContent=t.perks;}
+// ══════════════════════════════════════════
+//  RENDER
+// ══════════════════════════════════════════
+function renderStatus(){const t=TIERS[tier];const tb=document.getElementById('tierBadge');tb.className='tier-badge '+t.cls;tb.textContent=t.label;document.getElementById('statusName').textContent=t.name;document.getElementById('statusPerks').textContent=t.perks;}
 function renderXP(){document.getElementById('xpNum').textContent=xp+' XP';document.getElementById('xpBar').style.width=Math.min(100,xp%100)+'%';document.getElementById('streakNum').textContent=streak;}
-function renderDays(){const days=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'],dow=new Date().getDay(),todayIdx=(dow+6)%7;let html='';for(let i=0;i<7;i++){const done=i<todayIdx&&i<streak,isToday=i===todayIdx,cls=done?'done':isToday?'today':'future',icon=done?'✓':isToday?'🔥':'';html+=`<div class="day-pill"><div class="day-circle ${cls}">${icon}</div><div class="day-name">${days[i]}</div></div>`;}document.getElementById('daysRow').innerHTML=html;}
+function renderDays(){const days=['Пн','Вт','Ср','Чт','Пт','Сб','Вс'];const dow=new Date().getDay();const todayIdx=(dow+6)%7;let html='';for(let i=0;i<7;i++){const done=i<todayIdx&&i<streak;const isToday=i===todayIdx;const cls=done?'done':isToday?'today':'future';html+=`<div class="day-pill"><div class="day-circle ${cls}">${done?'✓':isToday?'🔥':''}</div><div class="day-name">${days[i]}</div></div>`;}document.getElementById('daysRow').innerHTML=html;}
 function renderSins(){document.getElementById('sinsGrid').innerHTML=SINS.map(sin=>`<div class="sin-card" id="card-${sin.id}"><span class="sin-icon">${sin.icon}</span><span class="sin-name">${sin.name}</span><div class="sin-count" id="cnt-${sin.id}">${counts[sin.id]}</div><div class="sin-btn-row"><button class="btn-minus" onclick="changeSin('${sin.id}',-1,event)">−</button><button class="btn-plus" onclick="changeSin('${sin.id}',+1,event)">+</button></div></div>`).join('');}
-function renderTotal(){const t=getTotal(),el=document.getElementById('totalCount');el.textContent=t;el.classList.add('bump');setTimeout(()=>el.classList.remove('bump'),300);const msgs=[[0,0,'Начни с чистого...'],[1,5,'Небольшие погрешности...'],[6,15,'Задумайся о молитве.'],[16,30,'Пора исповедаться.'],[31,50,'Ты идёшь вниз.'],[51,100,'Ад ждёт.'],[101,999,'Дьявол готовит комнату.']];for(const[lo,hi,txt]of msgs)if(t>=lo&&t<=hi){document.getElementById('totalText').textContent=txt;break;}}
+function renderTotal(){const t=getTotal();const el=document.getElementById('totalCount');el.textContent=t;el.classList.add('bump');setTimeout(()=>el.classList.remove('bump'),300);const msgs=[[0,0,'Начни с чистого листа...'],[1,5,'Небольшие погрешности...'],[6,15,'Задумайся о молитве.'],[16,30,'Пора исповедаться.'],[31,50,'Ты идёшь прямо вниз.'],[51,100,'Ад ждёт тебя.'],[101,999,'Дьявол готовит комнату.']];for(const[lo,hi,txt]of msgs)if(t>=lo&&t<=hi){document.getElementById('totalText').textContent=txt;break;}}
 function renderChart(){const pct=getHellPct(),c=376.9;document.getElementById('hellArc').style.strokeDashoffset=c-c*pct/100;document.getElementById('hellPct').textContent=pct+'%';document.getElementById('hellVerdict').textContent=getVerdict(pct);const max=Math.max(1,...SINS.map(s=>counts[s.id]||0));document.getElementById('barChart').innerHTML=SINS.map(s=>{const h=Math.round(((counts[s.id]||0)/max)*54);return`<div class="bar-wrap"><div class="bar" style="height:${Math.max(2,h)}px"></div><div class="bar-label">${s.icon}</div></div>`;}).join('');}
 function renderQuests(){questProg.sinTotal=getTotal();document.getElementById('questsList').innerHTML=QUESTS.map(q=>{const prog=Math.min(q.target,questProg[q.id]||0),done=prog>=q.target,pct=(prog/q.target)*100;return`<div class="quest-item"><span class="quest-icon">${q.icon}</span><div class="quest-info"><div class="quest-name ${done?'quest-done-name':''}">${q.name}</div><div class="quest-prog-bar"><div class="quest-prog-fill" style="width:${pct}%"></div></div></div><div class="quest-reward">${done?'✓':q.reward}</div></div>`;}).join('');}
-function renderLB(){LB[2].score=xp;document.getElementById('lbList').innerHTML=LB.map((u,i)=>`<div class="lb-item"><div class="lb-rank ${i===0?'gold':''}">${i+1}</div><div class="lb-avatar">${u.av}</div><div class="lb-info"><div class="lb-name">${u.name}</div><div class="lb-stat">${u.score} XP</div></div></div>`).join('');}
+function renderLB(){LB[2].score=xp;document.getElementById('lbList').innerHTML=LB.map((u,i)=>`<div class="lb-item"><div class="lb-rank ${i===0?'gold':''}">${i+1}</div><div class="lb-avatar">${u.av}</div><div class="lb-info"><div class="lb-name">${u.name} ${u.you?'<span class="lb-you">ВЫ</span>':''}</div><div class="lb-stat">${u.score} XP</div></div></div>`).join('');}
 function renderAll(){renderStatus();renderXP();renderDays();renderSins();renderTotal();renderChart();renderQuests();renderLB();}
 
-function changeSin(id,delta,e){e.stopPropagation();counts[id]=Math.max(0,(counts[id]||0)+delta);document.getElementById('cnt-'+id).textContent=counts[id];if(delta>0){const card=document.getElementById('card-'+id);card.classList.add('flash');setTimeout(()=>card.classList.remove('flash'),300);spawnP(3);setMood('angry',rand(['...записано.','ХУХ.','Ад расширяется.','Купи индульгенцию.']));showPopup(rand(['Грех зафиксирован.','Ещё один?','Сова недовольна.']));questProg.sinTotal=getTotal();if(tier==='free'&&getTotal()>0&&getTotal()%5===0)setTimeout(()=>showIndulgence(),1500);}save();renderTotal();renderChart();renderQuests();renderLB();}
+// ══════════════════════════════════════════
+//  SINS
+// ══════════════════════════════════════════
+function changeSin(id,delta,e){
+  e.stopPropagation();
+  counts[id]=Math.max(0,(counts[id]||0)+delta);
+  document.getElementById('cnt-'+id).textContent=counts[id];
+  if(delta>0){
+    const card=document.getElementById('card-'+id);
+    card.classList.add('flash');setTimeout(()=>card.classList.remove('flash'),300);
+    spawnP(3);
+    setMood('angry',rand(['...записано.','ХУХ.','Ад расширяется.','Купи индульгенцию.']));
+    showPopup(rand(['Грех зафиксирован.','Ещё один?','Сова недовольна.']));
+    questProg.sinTotal=getTotal();
+    if(tier==='free'&&getTotal()>0&&getTotal()%5===0)setTimeout(()=>showIndulgence(),1500);
+  }
+  save();renderTotal();renderChart();renderQuests();renderLB();
+}
+
+// REDEEM NOW — go to prayer screen, reset after pass
+function redeemNow(){
+  if(getTotal()===0){showPopup('Грехов нет. Сова одобряет.');return;}
+  showPopup('Читай молитву — грехи будут сброшены после прохождения.');
+  // flag to auto-reset after prayer passes
+  window._redeemPending=true;
+  goTo('s-prayer');
+}
+
 function resetDay(){if(!confirm('Новый день?'))return;SINS.forEach(s=>counts[s.id]=0);QUESTS.forEach(q=>questProg[q.id]=0);save();renderAll();setMood('idle','Новый день. Сова ждёт.');}
 
-const MOUTHS={idle:'M40,68 Q50,62 60,68',listen:'M42,66 Q50,66 58,66',happy:'M40,64 Q50,72 60,64',angry:'M40,70 Q50,65 60,70'};
-const IRISES={idle:'#cc0000',listen:'#ff8800',happy:'#00cc00',angry:'#ff0000'};
-function setMood(mood,text){const svg=document.getElementById('owlSvg');if(svg)svg.className.baseVal='owl-mini-svg '+mood;const m=document.getElementById('owlMouth');if(m)m.setAttribute('d',MOUTHS[mood]||MOUTHS.idle);const c=IRISES[mood]||'#cc0000';['owlIrisL','owlIrisR'].forEach(id=>{const el=document.getElementById(id);if(el)el.setAttribute('fill',c);});if(text)document.getElementById('owlText').textContent=text;}
-function owlClicked(){const t=getTotal();const phrase=t===0?rand(['Пока чист.','Хух. Посмотрим.']):t<5?rand(['Неплохо.','Читай молитвы.']):rand(['ХУХ ХУХ.','Иди молиться.','Разочаровал.']);showPopup(phrase);if(t>=5){setMood('angry',phrase);setTimeout(()=>setMood('idle','Сова следит.'),2500);}}
-const OWL_IDLE=['Я слежу.','Читай молитвы.','Хух.','Ты молился?','Сова не дремлет.'];
+// ══════════════════════════════════════════
+//  OWL / DEMON
+// ══════════════════════════════════════════
+const MOUTHS={idle:'M40,68 Q50,63 60,68',listen:'M42,66 Q50,66 58,66',happy:'M40,64 Q50,73 60,64',angry:'M40,71 Q50,65 60,71'};
+const IRIS_C={idle:'#cc0000',listen:'#ff6600',happy:'#00bb00',angry:'#ff0000'};
+
+function setMood(mood,text){
+  const svg=document.getElementById('owlSvg');
+  if(svg)svg.className.baseVal='demon-svg '+mood;
+  const m=document.getElementById('owlMouth');if(m)m.setAttribute('d',MOUTHS[mood]||MOUTHS.idle);
+  const c=IRIS_C[mood]||'#cc0000';
+  ['owlIrisL','owlIrisR'].forEach(id=>{const el=document.getElementById(id);if(el)el.setAttribute('fill',c);});
+  if(text)document.getElementById('owlText').textContent=text;
+}
+function spSetMood(mood,text){
+  const svg=document.getElementById('speechOwl');
+  if(svg)svg.className.baseVal='demon-svg '+mood;
+  const m=document.getElementById('spMouth');if(m)m.setAttribute('d',MOUTHS[mood]||MOUTHS.idle);
+  const c=IRIS_C[mood]||'#cc0000';
+  ['spIrisL','spIrisR'].forEach(id=>{const el=document.getElementById(id);if(el)el.setAttribute('fill',c);});
+  document.getElementById('speechRings').classList.toggle('active',mood==='listen');
+  if(text)document.getElementById('speechBubble').textContent=text;
+}
+
+function owlClicked(){
+  const t=getTotal();
+  const phrase=t===0?rand(['Пока чист. Сова ждёт.','Хух. Посмотрим.']):t<5?rand(['Неплохо. Но я слежу.','Читай молитвы.']):rand(['ХУХ ХУХ ХУХ.','Иди молиться. Сейчас.','Ты разочаровал меня.']);
+  showPopup(phrase);
+  if(t>=5){setMood('angry',phrase);setTimeout(()=>setMood('idle','Сова следит.'),2500);}
+}
+const OWL_IDLE=['Я слежу.','Читай молитвы.','Хух.','Ты молился?','Сова не дремлет.','Твои грехи — моя забота.'];
 setInterval(()=>{if(Math.random()<.25)setMood('idle',rand(OWL_IDLE));},9000);
+
 function showPopup(text){clearTimeout(popupTmt);document.getElementById('popupText').textContent=text;document.getElementById('owlPopup').classList.add('show');popupTmt=setTimeout(()=>document.getElementById('owlPopup').classList.remove('show'),4000);}
 function closePopup(){document.getElementById('owlPopup').classList.remove('show');}
-const HOME_PHRASES=['Я жду выбора.','Куда пойдём?','Хух. Выбирай.','Сова рекомендует грехи.'];
+
+const HOME_PHRASES=['Я жду твоего выбора.','Куда пойдём? В ад или к молитве?','Хух. Выбирай.','Сова рекомендует начать с грехов.'];
 let homeTmt;
 function petHomeOwl(){const tip=document.getElementById('homeTooltip');tip.textContent=rand(HOME_PHRASES);tip.classList.add('show');clearTimeout(homeTmt);homeTmt=setTimeout(()=>tip.classList.remove('show'),2500);}
 
-function purchase(t){tier=t;save();renderAll();const msgs={silver:'Серебро!',gold:'Золото!',plat:'Платина!',vip:'VIP!'};showPopup(msgs[t]);setMood('happy',msgs[t]);xp+=50;renderXP();goTo('s-sins');}
+// ══════════════════════════════════════════
+//  SHOP / INDULGENCE
+// ══════════════════════════════════════════
+function purchase(t){tier=t;save();renderAll();const msgs={silver:'Серебро!',gold:'Золото! ×1.25',plat:'Платина! Без ограничений.',vip:'VIP! Ангел назначен.'};showPopup(msgs[t]);setMood('happy',msgs[t]);xp+=50;renderXP();goTo('s-sins');}
 
-function showIndulgence(){const offer=IND_OFFERS[Math.floor(Math.random()*IND_OFFERS.length)];document.getElementById('indName').textContent=offer.name;document.getElementById('indDesc').textContent=offer.desc;document.getElementById('indPrice').textContent=offer.price;document.getElementById('indSub').textContent=offer.sub;document.getElementById('skipBtn').style.display='none';const screen=document.getElementById('indScreen');screen.classList.add('show');let secs=8,cd=secs;document.getElementById('indCountdown').textContent='0:0'+cd;clearInterval(indTimerInt);indTimerInt=setInterval(()=>{cd--;document.getElementById('indCountdown').textContent='0:'+(cd<10?'0':'')+cd;if(cd<=0){clearInterval(indTimerInt);document.getElementById('skipBtn').style.display='block';}},1000);}
-function buyIndulgence(){closeIndulgence();SINS.forEach(s=>counts[s.id]=0);save();renderAll();showPopup('Все грехи прощены.');setMood('happy','Индульгенция принята.');spawnP(8);}
+function showIndulgence(){
+  const offer=IND_OFFERS[Math.floor(Math.random()*IND_OFFERS.length)];
+  document.getElementById('indName').textContent=offer.name;
+  document.getElementById('indDesc').textContent=offer.desc;
+  document.getElementById('indPrice').textContent=offer.price;
+  document.getElementById('indSub').textContent=offer.sub;
+  document.getElementById('skipBtn').style.display='none';
+  document.getElementById('indScreen').classList.add('show');
+  let cd=8;document.getElementById('indCountdown').textContent=cd;
+  clearInterval(indTimerInt);
+  indTimerInt=setInterval(()=>{cd--;document.getElementById('indCountdown').textContent=cd;if(cd<=0){clearInterval(indTimerInt);document.getElementById('skipBtn').style.display='block';}},1000);
+}
+function buyIndulgence(){
+  closeIndulgence();SINS.forEach(s=>counts[s.id]=0);save();renderAll();
+  showPopup('Все грехи прощены. Сова одобряет.');
+  setMood('happy','Индульгенция принята.');spawnP(8);
+}
 function closeIndulgence(){clearInterval(indTimerInt);document.getElementById('indScreen').classList.remove('show');}
 
-let curPrayer=0,words=[],wordIdx=0,correct=0,wrong=0,listening=false,recognition=null,transcript='';
-function spSetMood(mood,text){const svg=document.getElementById('speechOwl');if(svg)svg.className.baseVal='owl-mini-svg '+mood;const m=document.getElementById('spMouth');if(m)m.setAttribute('d',MOUTHS[mood]||MOUTHS.idle);const c=IRISES[mood]||'#cc0000';['spIrisL','spIrisR'].forEach(id=>{const el=document.getElementById(id);if(el)el.setAttribute('fill',c);});document.getElementById('speechRings').classList.toggle('active',mood==='listen');if(text)document.getElementById('speechBubble').textContent=text;}
+// ══════════════════════════════════════════
+//  MIC WAVEFORM
+// ══════════════════════════════════════════
+const NUM_BARS=24;
+
+function buildWaveform(){
+  const wf=document.getElementById('micWaveform');
+  wf.innerHTML='';
+  for(let i=0;i<NUM_BARS;i++){
+    const b=document.createElement('div');
+    b.className='mic-bar';
+    b.id='mb'+i;
+    wf.appendChild(b);
+  }
+}
+
+function startWaveform(stream){
+  if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+  analyser=audioCtx.createAnalyser();
+  analyser.fftSize=64;
+  const src=audioCtx.createMediaStreamSource(stream);
+  src.connect(analyser);
+  micStream=stream;
+  const buf=new Uint8Array(analyser.frequencyBinCount);
+
+  function draw(){
+    if(!listening){stopWaveform();return;}
+    waveAnim=requestAnimationFrame(draw);
+    analyser.getByteFrequencyData(buf);
+    const step=Math.floor(buf.length/NUM_BARS);
+    document.getElementById('micLabel').textContent='🎙 Слушаю...';
+    for(let i=0;i<NUM_BARS;i++){
+      const val=buf[i*step]||0;
+      const h=Math.max(4, Math.round((val/255)*36));
+      const bar=document.getElementById('mb'+i);
+      if(bar){
+        bar.style.height=h+'px';
+        bar.classList.toggle('active', val>30);
+        // color by intensity
+        const r=Math.round(100+val*0.6);
+        const g=Math.round(val*0.2);
+        bar.style.background=`rgb(${r},${g},0)`;
+      }
+    }
+  }
+  draw();
+}
+
+function stopWaveform(){
+  if(waveAnim){cancelAnimationFrame(waveAnim);waveAnim=null;}
+  document.getElementById('micLabel').textContent='Микрофон не активен';
+  for(let i=0;i<NUM_BARS;i++){
+    const bar=document.getElementById('mb'+i);
+    if(bar){bar.style.height='4px';bar.style.background='';bar.classList.remove('active');}
+  }
+}
+
+// ══════════════════════════════════════════
+//  SPEECH RECOGNITION
+// ══════════════════════════════════════════
 function buildPrayerTabs(){document.getElementById('prayerTabs').innerHTML=PRAYERS_DATA.map((p,i)=>`<div class="prayer-tab${i===0?' active':''}" onclick="loadPrayer(${i})">${p.name}</div>`).join('');}
-function loadPrayer(idx){curPrayer=idx;const p=PRAYERS_DATA[idx];document.getElementById('prayerTitle').textContent=p.name;words=p.text.split(' ').map(w=>({text:w,norm:norm(w),state:'pending'}));wordIdx=0;correct=0;wrong=0;transcript='';renderWords();renderScores();renderProg();document.getElementById('recognizedBox').innerHTML='Сова ещё ничего не слышала...';hideResult();stopListening();updateBtn(false);document.getElementById('progFill').classList.remove('green');document.querySelectorAll('.prayer-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));spSetMood('idle','Нажми кнопку и читай вслух.');}
+function loadPrayer(idx){curPrayer=idx;const p=PRAYERS_DATA[idx];document.getElementById('prayerTitle').textContent=p.name;words=p.text.split(' ').map(w=>({text:w,norm:normW(w),state:'pending'}));wordIdx=0;correct=0;wrong=0;transcript='';renderWords();renderScores();renderProg();document.getElementById('recognizedBox').innerHTML='Сова ещё ничего не слышала...';hideResult();stopListening();updateBtn(false);document.getElementById('progFill').classList.remove('green');document.querySelectorAll('.prayer-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));spSetMood('idle','Нажми кнопку и читай вслух, медленно.');}
 function renderWords(){document.getElementById('prayerWords').innerHTML=words.map((w,i)=>`<span class="word ${w.state}" id="w${i}">${w.text} </span>`).join('');}
 function setWordState(idx,state){if(idx>=words.length)return;words[idx].state=state;const el=document.getElementById('w'+idx);if(el)el.className='word '+state;}
 function renderScores(){document.getElementById('scCorrect').textContent=correct;document.getElementById('scWrong').textContent=wrong;const t=correct+wrong;document.getElementById('scPct').textContent=t>0?Math.round(correct/t*100)+'%':'—';}
 function renderProg(){const pct=words.length>0?Math.round(correct/words.length*100):0;document.getElementById('progFill').style.width=pct+'%';document.getElementById('progText').textContent=correct+' / '+words.length+' слов';}
 function hideResult(){document.getElementById('resultBanner').classList.remove('show','pass','fail');}
-function setupRecognition(){const SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR)return false;recognition=new SR();recognition.lang='ru-RU';recognition.continuous=true;recognition.interimResults=true;recognition.maxAlternatives=3;recognition.onstart=()=>{listening=true;updateBtn(true);spSetMood('listen','Слушаю... Читай медленно.');spawnP(2);};recognition.onresult=(e)=>{let interim='';for(let i=e.resultIndex;i<e.results.length;i++){const r=e.results[i];if(r.isFinal){const t=r[0].transcript;transcript+=' '+t;processTranscript(t);}else interim+=r[0].transcript;}document.getElementById('recognizedBox').innerHTML='<span>'+(transcript+' '+interim).trim()+'</span>';};recognition.onerror=(e)=>{if(e.error==='not-allowed'){spSetMood('angry','Доступ к микрофону запрещён!');document.getElementById('speechBubble').textContent='Разреши микрофон в Chrome.';}else if(e.error==='no-speech'){spSetMood('angry','Я ничего не слышу. Говори громче!');}stopListening();};recognition.onend=()=>{if(listening)try{recognition.start();}catch(err){}};return true;}
-function processTranscript(text){const spoken=text.trim().split(/\s+/).map(norm).filter(Boolean);for(const sp of spoken){if(wordIdx>=words.length)break;setWordState(wordIdx,'current');const exp=words[wordIdx].norm;const match=sp===exp||editDist(sp,exp)<=2;if(match){setWordState(wordIdx,'correct');correct++;wordIdx++;if(wordIdx<words.length)setWordState(wordIdx,'current');if(wordIdx>=words.length){finishPrayer();return;}}else{setWordState(wordIdx,'wrong');wrong++;let found=-1;for(let j=wordIdx+1;j<Math.min(wordIdx+4,words.length);j++){if(sp===words[j].norm||editDist(sp,words[j].norm)<=1){found=j;break;}}if(found!==-1){for(let j=wordIdx;j<found;j++)setWordState(j,'wrong');wordIdx=found;setWordState(wordIdx,'correct');correct++;wordIdx++;if(wordIdx<words.length)setWordState(wordIdx,'current');if(wordIdx>=words.length){finishPrayer();return;}}else{wordIdx++;if(wordIdx<words.length)setWordState(wordIdx,'current');}}renderScores();renderProg();}const pct=words.length>0?correct/words.length:0;if(pct>.7&&listening)spSetMood('listen','Хорошо! Продолжай...');else if(wrong>3&&listening)spSetMood('listen','Медленнее. Чётко.');}
-function finishPrayer(){stopListening();renderScores();renderProg();document.getElementById('progFill').classList.add('green');const pct=Math.round(correct/words.length*100);const banner=document.getElementById('resultBanner');banner.classList.remove('pass','fail');if(pct>=70){banner.classList.add('show','pass');document.getElementById('resultIcon').textContent='✝';document.getElementById('resultTitle').textContent='Молитва засчитана';document.getElementById('resultTitle').className='result-title pass';document.getElementById('resultDetail').textContent='Точность: '+pct+'%. '+(pct===100?'Идеально!':pct>=90?'Почти безупречно.':'Хорошо.');spSetMood('happy','✝ Принято! '+pct+'%.');spawnP(6);xp+=Math.round(30*TIERS[tier].bonus);questProg.prayCount=(questProg.prayCount||0)+1;renderXP();renderQuests();save();showPopup('+'+Math.round(30*TIERS[tier].bonus)+' XP ✦');}else{banner.classList.add('show','fail');document.getElementById('resultIcon').textContent='😤';document.getElementById('resultTitle').textContent='Недостаточно хорошо';document.getElementById('resultTitle').className='result-title fail';document.getElementById('resultDetail').textContent='Точность: '+pct+'%. Нужно 70%. Читай ещё раз.';spSetMood('angry','ХУХ. '+pct+'% — позор. Заново.');playAngrySound();}}
-function toggleListening(){initAudio();if(!recognition&&!setupRecognition()){document.getElementById('speechBubble').textContent='Распознавание не поддерживается. Используй Chrome.';return;}if(listening){stopListening();spSetMood('idle','Остановлено.');}else{hideResult();if(wordIdx===0){words.forEach((_,i)=>setWordState(i,'pending'));correct=0;wrong=0;transcript='';renderScores();renderProg();}setWordState(wordIdx,'current');try{recognition.start();}catch(e){setupRecognition();try{recognition.start();}catch(e2){}}}}
-function stopListening(){listening=false;updateBtn(false);document.getElementById('speechRings').classList.remove('active');if(recognition)try{recognition.stop();}catch(e){}}
+
+function setupRecognition(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR)return false;
+  recognition=new SR();
+  recognition.lang='ru-RU';recognition.continuous=true;recognition.interimResults=true;recognition.maxAlternatives=3;
+  recognition.onstart=()=>{
+    listening=true;updateBtn(true);
+    spSetMood('listen','Слушаю... Читай вслух, медленно и чётко.');
+    spawnP(2);
+    // start waveform — request mic separately for analyser
+    navigator.mediaDevices.getUserMedia({audio:true}).then(stream=>{
+      startWaveform(stream);
+    }).catch(()=>{});
+  };
+  recognition.onresult=(e)=>{
+    let interim='';
+    for(let i=e.resultIndex;i<e.results.length;i++){
+      const r=e.results[i];
+      if(r.isFinal){const t=r[0].transcript;transcript+=' '+t;processTranscript(t);}
+      else interim+=r[0].transcript;
+    }
+    document.getElementById('recognizedBox').innerHTML='<span>'+(transcript+' '+interim).trim()+'</span>';
+  };
+  recognition.onerror=(e)=>{
+    if(e.error==='not-allowed'){spSetMood('angry','Доступ к микрофону запрещён! Нужен HTTPS.');document.getElementById('speechBubble').textContent='Разреши микрофон в Chrome.';}
+    else if(e.error==='no-speech'){spSetMood('angry','Я ничего не слышу. Говори громче!');}
+    stopListening();
+  };
+  recognition.onend=()=>{if(listening)try{recognition.start();}catch(err){}};
+  return true;
+}
+
+function processTranscript(text){
+  const spoken=text.trim().split(/\s+/).map(normW).filter(Boolean);
+  for(const sp of spoken){
+    if(wordIdx>=words.length)break;
+    setWordState(wordIdx,'current');
+    const exp=words[wordIdx].norm;
+    const match=sp===exp||editDist(sp,exp)<=2;
+    if(match){setWordState(wordIdx,'correct');correct++;wordIdx++;if(wordIdx<words.length)setWordState(wordIdx,'current');if(wordIdx>=words.length){finishPrayer();return;}}
+    else{setWordState(wordIdx,'wrong');wrong++;let found=-1;for(let j=wordIdx+1;j<Math.min(wordIdx+4,words.length);j++){if(sp===words[j].norm||editDist(sp,words[j].norm)<=1){found=j;break;}}if(found!==-1){for(let j=wordIdx;j<found;j++)setWordState(j,'wrong');wordIdx=found;setWordState(wordIdx,'correct');correct++;wordIdx++;if(wordIdx<words.length)setWordState(wordIdx,'current');if(wordIdx>=words.length){finishPrayer();return;}}else{wordIdx++;if(wordIdx<words.length)setWordState(wordIdx,'current');}}
+    renderScores();renderProg();
+  }
+  const pct=words.length>0?correct/words.length:0;
+  if(pct>.7&&listening)spSetMood('listen','Хорошо! Продолжай...');
+  else if(wrong>3&&listening)spSetMood('listen','Медленнее. Чётко.');
+}
+
+function finishPrayer(){
+  stopListening();renderScores();renderProg();
+  document.getElementById('progFill').classList.add('green');
+  const pct=Math.round(correct/words.length*100);
+  const banner=document.getElementById('resultBanner');banner.classList.remove('pass','fail');
+  if(pct>=70){
+    banner.classList.add('show','pass');
+    document.getElementById('resultIcon').textContent='✝';
+    document.getElementById('resultTitle').textContent='Молитва засчитана';
+    document.getElementById('resultTitle').className='result-title pass';
+    document.getElementById('resultDetail').textContent='Точность: '+pct+'%. '+(pct===100?'Идеально!':pct>=90?'Почти безупречно.':'Хорошо.');
+    spSetMood('happy','✝ Принято! '+pct+'%.');
+    spawnP(6);xp+=Math.round(30*TIERS[tier].bonus);
+    questProg.prayCount=(questProg.prayCount||0)+1;renderXP();renderQuests();save();
+    showPopup('+'+Math.round(30*TIERS[tier].bonus)+' XP духовности ✦');
+    // REDEEM: if came from "Немедленно Искупить" — reset sins
+    if(window._redeemPending){
+      window._redeemPending=false;
+      setTimeout(()=>{
+        SINS.forEach(s=>counts[s.id]=0);save();renderAll();
+        showPopup('Грехи сброшены после покаяния. Сова довольна.');
+        setMood('happy','Покаяние принято. Начинай сначала.');
+      },1500);
+    }
+  } else {
+    banner.classList.add('show','fail');
+    document.getElementById('resultIcon').textContent='😤';
+    document.getElementById('resultTitle').textContent='Недостаточно хорошо';
+    document.getElementById('resultTitle').className='result-title fail';
+    document.getElementById('resultDetail').textContent='Точность: '+pct+'%. Нужно 70%. Читай ещё раз.';
+    spSetMood('angry','ХУХ. '+pct+'% — позор. Заново.');
+  }
+}
+
+function toggleListening(){
+  if(!recognition&&!setupRecognition()){document.getElementById('speechBubble').textContent='Используй Chrome на HTTPS.';return;}
+  if(listening){stopListening();spSetMood('idle','Остановлено.');}
+  else{
+    hideResult();
+    if(wordIdx===0){words.forEach((_,i)=>setWordState(i,'pending'));correct=0;wrong=0;transcript='';renderScores();renderProg();}
+    setWordState(wordIdx,'current');
+    try{recognition.start();}catch(e){setupRecognition();try{recognition.start();}catch(e2){}}
+  }
+}
+function stopListening(){
+  listening=false;updateBtn(false);
+  document.getElementById('speechRings').classList.remove('active');
+  if(recognition)try{recognition.stop();}catch(e){}
+  stopWaveform();
+  // stop mic stream
+  if(micStream){micStream.getTracks().forEach(t=>t.stop());micStream=null;}
+}
 function updateBtn(on){document.getElementById('btnListen').classList.toggle('on',on);document.getElementById('btnText').textContent=on?'Остановить':'Начать чтение';}
 function resetPrayer(){stopListening();loadPrayer(curPrayer);}
 
-function spawnP(n){for(let i=0;i<n;i++)setTimeout(()=>{const p=document.createElement('div');p.className='particle';p.style.cssText=`left:${Math.random()*window.innerWidth}px;--d:${(Math.random()-.5)*80}px;animation-duration:${2+Math.random()*2}s;width:${3+Math.random()*3}px;height:${3+Math.random()*3}px;`;document.getElementById('particles').appendChild(p);setTimeout(()=>p.remove(),4500);},i*120);}
+// ══════════════════════════════════════════
+//  PARTICLES
+// ══════════════════════════════════════════
+function spawnP(n){
+  for(let i=0;i<n;i++)setTimeout(()=>{
+    const p=document.createElement('div');p.className='particle';
+    p.style.cssText=`left:${Math.random()*window.innerWidth}px;--d:${(Math.random()-.5)*80}px;animation-duration:${2+Math.random()*2}s;width:${3+Math.random()*3}px;height:${3+Math.random()*3}px;`;
+    document.getElementById('particles').appendChild(p);
+    setTimeout(()=>p.remove(),4500);
+  },i*120);
+}
 setInterval(()=>{if(getTotal()>0)spawnP(1);},1400);
 
-renderAll();buildPrayerTabs();loadPrayer(0);setTimeout(()=>showPopup('Добро пожаловать. Сова наблюдает.'),1200);setTimeout(()=>{if(tier==='free')showIndulgence();},18000);
+// ══════════════════════════════════════════
+//  BOOT
+// ══════════════════════════════════════════
+buildWaveform();
+renderAll();
+buildPrayerTabs();
+loadPrayer(0);
+setTimeout(()=>showPopup('Добро пожаловать. Сова наблюдает.'),1200);
+setTimeout(()=>{if(tier==='free')showIndulgence();},18000);
 </script>
 </body>
 </html>
-
